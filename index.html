@@ -114,7 +114,7 @@ a.portada:hover{border-color:var(--muted)}
   <div class="pgrid">
     <div><div class="hl">Hoy</div><div class="pv">$6,055</div></div>
     <div><div class="hl">Julio al día 27</div><div class="pv">$330,826</div></div>
-    <div><div class="hl">vs junio</div><div class="pv c-crit">48%</div></div>
+    <div><div class="hl">Mes vs 2025</div><div class="pv c-crit">71%</div></div>
     <div><div class="hl">Año vs 2025</div><div class="pv c-warn">94%</div></div>
   </div>
   <div class="ps">Vencido: $228,039 · Por facturar: $153,717 (4 pedidos) · En riesgo: 8</div>
@@ -126,14 +126,14 @@ a.portada:hover{border-color:var(--muted)}
   <div class="pgrid">
     <div><div class="hl">Hoy</div><div class="pv">$20,000</div></div>
     <div><div class="hl">Julio al día 27</div><div class="pv">$141,809</div></div>
-    <div><div class="hl">vs junio</div><div class="pv c-warn">98%</div></div>
+    <div><div class="hl">Mes vs 2025</div><div class="pv c-warn">91%</div></div>
     <div><div class="hl">Año vs 2025</div><div class="pv c-crit">44%</div></div>
   </div>
   <div class="ps">Vencido: $0 · Por facturar: 7 pedidos · Recompra: 61%</div>
 </a>
 </div>
 
-<footer>Facturas timbradas (state=posted) en Odoo, montos con IVA. Semáforo: verde = igual o mejor que la referencia, ámbar = hasta 15% abajo, rojo = más de 15% abajo. El acumulado (YTD) compara enero–hoy contra el mismo período de 2025, prorrateando julio de 2025 al día 27. “Venta de hoy” = facturas con fecha del día del corte. PÚBLICO GENERAL y cuentas internas se excluyen de las listas de acción (no de los totales). Generado el 27 de julio de 2026 desde datos_ventas.json.</footer>
+<footer>Facturas timbradas (state=posted) en Odoo, montos con IVA. TODAS las comparativas son contra 2025 (año contra año, para que el comparativo sea justo): el mes en curso se compara contra julio de 2025 prorrateado al día 27, y el acumulado (YTD) contra enero–julio de 2025 con la misma prórroga. Semáforo: verde = igual o mejor que 2025, ámbar = hasta 15% abajo, rojo = más de 15% abajo. “Venta de hoy” = facturas con fecha del día del corte. PÚBLICO GENERAL y cuentas internas se excluyen de las listas de acción (no de los totales). Generado el 27 de julio de 2026 desde datos_ventas.json.</footer>
 </div>
 <script>
 var CD = null;
@@ -153,14 +153,17 @@ function build(){
   var moneyTip = { callbacks: { label: function(ctx){ return ctx.dataset.label + ': ' + MXN.format(ctx.parsed.y); } } };
 
   charts.push(new Chart(document.getElementById('chYoy'), {
-    type: 'bar',
+    type: 'line',
     data: { labels: CD.meses, datasets: [
-      { label: '2025', data: CD.yPas, backgroundColor: ref, borderRadius: 4, maxBarThickness: 22 },
-      { label: '2026', data: CD.yAct, backgroundColor: acc, borderRadius: 4, maxBarThickness: 22 }
+      { label: '2025', data: CD.yPas, borderColor: ref, backgroundColor: ref,
+        borderWidth: 2, pointRadius: 3.5, borderDash: [7, 5], tension: 0.25 },
+      { label: '2026', data: CD.yAct, borderColor: acc, backgroundColor: acc,
+        borderWidth: 2.5, pointRadius: 4.5, tension: 0.25 }
     ]},
-    options: { responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { position: 'top', labels: { boxWidth: 12, boxHeight: 12 } }, tooltip: moneyTip },
-      scales: { x: { grid: { display: false } }, y: { ticks: moneyTick, border: { display: false } } } }
+    options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { position: 'top', labels: { boxWidth: 14, boxHeight: 3 } }, tooltip: moneyTip },
+      scales: { x: { grid: { display: false } },
+                y: { beginAtZero: true, ticks: moneyTick, border: { display: false } } } }
   }));
 
   charts.push(new Chart(document.getElementById('chDia'), {
