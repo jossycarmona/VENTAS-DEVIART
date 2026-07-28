@@ -3,68 +3,69 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ventas DEVIART — Centro de Mando</title>
+<title>Ventas DEVIART — Paneles Diarios</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
 :root{
-  color-scheme: dark;
-  --page:#0a0c0e; --surface:#15181b; --bezel:#1d2125; --ink:#f2f2ef; --ink2:#c3c2b7; --muted:#898781;
-  --grid:#2c2c2a; --border:rgba(255,255,255,0.10);
-  --accent:#3987e5; --good:#0ca30c; --warncol:#fab219; --crit:#e66767; --critled:#d03b3b;
+  color-scheme: light;
+  --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --muted:#898781;
+  --grid:#e1e0d9; --border:rgba(11,11,11,0.10);
+  --accent:#2a78d6; --good:#006300; --warnink:#8a5f00; --crit:#c22a2a;
+  --dgood:#0ca30c; --dwarn:#fab219; --dcrit:#d03b3b; --refbar:#c9c8c0;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --page:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
+    --grid:#2c2c2a; --border:rgba(255,255,255,0.10);
+    --accent:#3987e5; --good:#0ca30c; --warnink:#fab219; --crit:#e66767; --refbar:#4a4d45;
+  }
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--page);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
-  font-size:15px;line-height:1.45;padding:22px 16px 60px}
-.wrap{max-width:1150px;margin:0 auto}
-.mono{font-family:ui-monospace,Menlo,Consolas,monospace}
-header.cab{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;
-  background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 20px;margin-bottom:16px}
-.crumb{font-size:12.5px;margin-bottom:4px}
+  font-size:15px;line-height:1.45;padding:24px 16px 60px}
+.wrap{max-width:1120px;margin:0 auto}
+header.top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:18px}
+.crumb{font-size:13px;margin-bottom:6px}
 .crumb a{color:var(--muted);text-decoration:none}
-.crumb a:hover{color:var(--ink2)}
-h1{font-size:22px;font-weight:750;letter-spacing:0.01em}
-h1 .dot{display:inline-block;width:13px;height:13px;border-radius:4px;background:var(--accent);margin-right:8px}
-.sub{color:var(--ink2);margin-top:2px;font-size:13px}
-.master{display:flex;align-items:center;gap:10px;background:var(--bezel);border:1px solid var(--border);
-  border-radius:10px;padding:10px 16px}
-.master .mw{font-size:15px;font-weight:750;letter-spacing:0.06em}
-h2{font-size:13px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);
-  margin:30px 0 12px;display:flex;align-items:center;gap:10px}
+.crumb a:hover{color:var(--ink2);text-decoration:underline}
+h1{font-size:26px;font-weight:750;letter-spacing:-0.02em}
+h1 .sq{display:inline-block;width:14px;height:14px;border-radius:4px;background:var(--accent);margin-right:9px}
+.sub{color:var(--ink2);margin-top:3px;font-size:14px}
+.estado{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);
+  border-radius:999px;padding:8px 16px;font-size:13.5px;font-weight:650}
+h2{font-size:13px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);
+  margin:32px 0 12px;display:flex;align-items:center;gap:10px}
 h2::after{content:"";flex:1;height:1px;background:var(--grid)}
 h3{font-size:13.5px;font-weight:600;color:var(--ink2);margin:0 0 10px}
-/* instrumentos */
-.gauges{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
-.gpanel{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 14px 10px;
-  text-align:center;min-width:0;box-shadow:inset 0 1px 0 rgba(255,255,255,0.04)}
-.gtitle{font-size:11.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
-.gpanel svg{width:100%;max-width:280px;height:auto}
-.gsub{font-size:12.5px;color:var(--ink2);margin-top:2px}
-/* lecturas digitales */
-.readouts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:14px}
-.readout{background:var(--bezel);border:1px solid var(--border);border-radius:12px;padding:12px 16px;min-width:0}
-.rl{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted)}
-.rv{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:29px;font-weight:700;margin:4px 0 2px;
-  color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.rs{font-size:12px;color:var(--ink2)}
-/* leds */
-.leds{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
-.ledbox{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 16px;min-width:0}
-.ledrow{display:flex;align-items:center;gap:10px}
-.led{width:13px;height:13px;border-radius:50%;flex:none}
-.led.good{background:var(--good);box-shadow:0 0 10px 2px rgba(12,163,12,.55)}
-.led.warn{background:var(--warncol);box-shadow:0 0 10px 2px rgba(250,178,25,.5)}
-.led.crit{background:var(--critled);box-shadow:0 0 10px 2px rgba(208,59,59,.55)}
-.led.info{background:var(--accent);box-shadow:0 0 10px 2px rgba(120,150,255,.35)}
-.lv{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:24px;font-weight:700}
-.ll{font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink2);margin-top:4px}
-.ls{font-size:12px;color:var(--muted)}
+/* KPIs hero */
+.heroes{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.hero{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 18px;min-width:0}
+.hl{font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted)}
+.hv{font-size:34px;font-weight:750;margin:6px 0 4px;letter-spacing:-0.01em;display:flex;align-items:center;
+  gap:10px;flex-wrap:wrap;font-variant-numeric:tabular-nums}
+.hs{font-size:13px;color:var(--ink2)}
+.badge{font-size:13px;font-weight:750;padding:3px 10px;border-radius:999px}
+.badge.good{color:var(--good);background:rgba(12,163,12,.12)}
+.badge.warn{color:var(--warnink);background:rgba(250,178,25,.14)}
+.badge.crit{color:var(--crit);background:rgba(208,59,59,.12)}
+.c-good{color:var(--good)} .c-warn{color:var(--warnink)} .c-crit{color:var(--crit)}
+/* indicadores secundarios */
+.inds{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.indbox{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px 16px;min-width:0}
+.indrow{display:flex;align-items:center;gap:9px}
+.dot{width:11px;height:11px;border-radius:50%;flex:none}
+.dot.good{background:var(--dgood)} .dot.warn{background:var(--dwarn)} .dot.crit{background:var(--dcrit)}
+.iv{font-size:23px;font-weight:750;font-variant-numeric:tabular-nums}
+.il{font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink2);margin-top:4px}
+.is{font-size:12.5px;color:var(--muted)}
 /* acciones */
 ol.acciones{list-style:none;display:flex;flex-direction:column;gap:8px}
 ol.acciones li{background:var(--surface);border:1px solid var(--border);border-radius:10px;
-  padding:11px 14px;font-size:14.5px;display:flex;align-items:baseline;gap:10px}
-.prio{font-family:ui-monospace,Menlo,monospace;font-size:12px;font-weight:800;border-radius:6px;
-  padding:2px 7px;flex:none;color:#0a0c0e}
-.prio.crit{background:var(--critled)} .prio.warn{background:var(--warncol)} .prio.info{background:var(--accent)}
+  padding:11px 14px;font-size:14.5px;display:flex;align-items:baseline;gap:11px}
+.prio{font-size:12.5px;font-weight:800;border-radius:999px;width:22px;height:22px;flex:none;
+  display:inline-flex;align-items:center;justify-content:center;color:#fff;transform:translateY(3px)}
+.prio.crit{background:var(--dcrit)} .prio.warn{background:#b97e00} .prio.info{background:var(--accent)}
 /* tarjetas / tablas */
 .cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media(max-width:840px){.cards{grid-template-columns:1fr}}
@@ -86,9 +87,9 @@ footer{margin-top:40px;color:var(--muted);font-size:12.5px;border-top:1px solid 
 <body>
 <div class="wrap">
 
-<header class="cab">
+<header class="top">
   <div>
-    <h1>Ventas DEVIART — Centro de Mando</h1>
+    <h1>Ventas DEVIART</h1>
     <div class="sub">Paneles diarios por negocio · Fuente: Odoo · Corte: <strong>27 de julio de 2026</strong></div>
   </div>
 </header>
@@ -97,51 +98,53 @@ footer{margin-top:40px;color:var(--muted);font-size:12.5px;border-top:1px solid 
 @media(max-width:760px){.portadas{grid-template-columns:1fr}}
 a.portada{display:block;background:var(--surface);border:1px solid var(--border);border-radius:16px;
   padding:20px 22px;text-decoration:none;color:var(--ink);transition:border-color .15s}
-a.portada:hover{border-color:var(--accent)}
-.pt{font-size:16px;font-weight:750;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
-.pt .dot{width:13px;height:13px;border-radius:4px;background:var(--accent);display:inline-block}
-.pstat{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12px;font-weight:750;
-  letter-spacing:0.08em;color:var(--ink2)}
-.pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px;margin:16px 0 10px}
-.pv{font-size:24px;font-weight:700;margin-top:3px;white-space:nowrap}
-.ps{font-size:12.5px;color:var(--ink2)}
+a.portada:hover{border-color:var(--muted)}
+.pt{font-size:16.5px;font-weight:750;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.pt .sq{width:13px;height:13px;border-radius:4px;display:inline-block}
+.pstat{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:650;color:var(--ink2)}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(115px,1fr));gap:12px;margin:16px 0 10px}
+.pv{font-size:25px;font-weight:750;margin-top:3px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.ps{font-size:13px;color:var(--ink2)}
 </style>
 <div class="portadas">
 
-<a class="portada" href="distribuidores.html" style="--accent:#3987e5">
-  <div class="pt"><span class="dot"></span>Distribuidores
-    <span class="pstat"><span class="led crit"></span>CRÍTICO</span></div>
+<a class="portada" href="distribuidores.html">
+  <div class="pt"><span class="sq" style="background:#2a78d6"></span>Distribuidores
+    <span class="pstat"><span class="dot crit"></span>Requiere acción</span></div>
   <div class="pgrid">
-    <div><div class="rl">Hoy</div><div class="pv mono">$7,920</div></div>
-    <div><div class="rl">Julio al día 27</div><div class="pv mono">$459,191</div></div>
-    <div><div class="rl">Ritmo vs junio</div><div class="pv mono" style="color:#d03b3b">51%</div></div>
-    <div><div class="rl">YTD vs 2025</div><div class="pv mono" style="color:#fab219">96%</div></div>
+    <div><div class="hl">Hoy</div><div class="pv">$7,920</div></div>
+    <div><div class="hl">Julio al día 27</div><div class="pv">$459,191</div></div>
+    <div><div class="hl">vs junio</div><div class="pv c-crit">51%</div></div>
+    <div><div class="hl">Año vs 2025</div><div class="pv c-warn">96%</div></div>
   </div>
   <div class="ps">Vencido: $228,039 · En riesgo: 8 · Acción #1: cobrar a Fanny Montserrat Lartigue Gutierrez</div>
 </a>
 
-<a class="portada" href="impresion.html" style="--accent:#d95926">
-  <div class="pt"><span class="dot"></span>Vasos impresos
-    <span class="pstat"><span class="led crit"></span>CRÍTICO</span></div>
+<a class="portada" href="impresion.html">
+  <div class="pt"><span class="sq" style="background:#eb6834"></span>Vasos impresos
+    <span class="pstat"><span class="dot crit"></span>Requiere acción</span></div>
   <div class="pgrid">
-    <div><div class="rl">Hoy</div><div class="pv mono">$20,000</div></div>
-    <div><div class="rl">Julio al día 27</div><div class="pv mono">$141,809</div></div>
-    <div><div class="rl">Ritmo vs junio</div><div class="pv mono" style="color:#fab219">98%</div></div>
-    <div><div class="rl">YTD vs 2025</div><div class="pv mono" style="color:#d03b3b">44%</div></div>
+    <div><div class="hl">Hoy</div><div class="pv">$20,000</div></div>
+    <div><div class="hl">Julio al día 27</div><div class="pv">$141,809</div></div>
+    <div><div class="hl">vs junio</div><div class="pv c-warn">98%</div></div>
+    <div><div class="hl">Año vs 2025</div><div class="pv c-crit">44%</div></div>
   </div>
   <div class="ps">Vencido: $0 · Recompra: 61% · Acción #1: llamar a Comercializadora Cafedoc</div>
 </a>
 </div>
 
-<footer>Facturas timbradas (state=posted) en Odoo, montos con IVA. Escala de los instrumentos: 100 = igual que la referencia; zona roja &lt;85, ámbar 85–100, verde &gt;100. YTD compara enero–hoy contra el mismo período de 2025 (el mes en curso de 2025 se prorratea al día 27). “Venta de hoy” = facturas con fecha del día del corte. PÚBLICO GENERAL y cuentas internas se excluyen de las listas de acción (no de los totales). Generado el 27 de julio de 2026 desde datos_ventas.json.</footer>
+<footer>Facturas timbradas (state=posted) en Odoo, montos con IVA. Semáforo: verde = igual o mejor que la referencia, ámbar = hasta 15% abajo, rojo = más de 15% abajo. El acumulado (YTD) compara enero–hoy contra el mismo período de 2025, prorrateando julio de 2025 al día 27. “Venta de hoy” = facturas con fecha del día del corte. PÚBLICO GENERAL y cuentas internas se excluyen de las listas de acción (no de los totales). Generado el 27 de julio de 2026 desde datos_ventas.json.</footer>
 </div>
 <script>
 var CD = null;
+var mq = window.matchMedia('(prefers-color-scheme: dark)');
 function css(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
 var MXNc = new Intl.NumberFormat('es-MX', {style:'currency', currency:'MXN', notation:'compact', maximumFractionDigits:1});
 var MXN  = new Intl.NumberFormat('es-MX', {style:'currency', currency:'MXN', maximumFractionDigits:0});
+var charts = [];
 function build(){
-  var acc = css('--accent'), muted = css('--muted'), grid = css('--grid');
+  charts.forEach(function(c){ c.destroy(); }); charts = [];
+  var acc = css('--accent'), muted = css('--muted'), grid = css('--grid'), ref = css('--refbar');
   Chart.defaults.color = muted;
   Chart.defaults.borderColor = grid;
   Chart.defaults.font.family = 'system-ui,-apple-system,"Segoe UI",sans-serif';
@@ -149,18 +152,18 @@ function build(){
   var moneyTick = { callback: function(v){ return MXNc.format(v); } };
   var moneyTip = { callbacks: { label: function(ctx){ return ctx.dataset.label + ': ' + MXN.format(ctx.parsed.y); } } };
 
-  new Chart(document.getElementById('chYoy'), {
+  charts.push(new Chart(document.getElementById('chYoy'), {
     type: 'bar',
     data: { labels: CD.meses, datasets: [
-      { label: '2025', data: CD.yPas, backgroundColor: '#4a4d45', borderRadius: 4, maxBarThickness: 22 },
+      { label: '2025', data: CD.yPas, backgroundColor: ref, borderRadius: 4, maxBarThickness: 22 },
       { label: '2026', data: CD.yAct, backgroundColor: acc, borderRadius: 4, maxBarThickness: 22 }
     ]},
     options: { responsive: true, maintainAspectRatio: false,
       plugins: { legend: { position: 'top', labels: { boxWidth: 12, boxHeight: 12 } }, tooltip: moneyTip },
       scales: { x: { grid: { display: false } }, y: { ticks: moneyTick, border: { display: false } } } }
-  });
+  }));
 
-  new Chart(document.getElementById('chDia'), {
+  charts.push(new Chart(document.getElementById('chDia'), {
     type: 'bar',
     data: { labels: CD.labelsDia, datasets: [
       { label: 'Venta del día', data: CD.dia, backgroundColor: acc, borderRadius: 3, maxBarThickness: 22 }
@@ -169,9 +172,12 @@ function build(){
       plugins: { legend: { display: false }, tooltip: moneyTip },
       scales: { x: { grid: { display: false }, ticks: { maxRotation: 60, autoSkip: true, maxTicksLimit: 16 } },
                 y: { ticks: moneyTick, border: { display: false } } } }
-  });
+  }));
 }
-if (document.getElementById('chYoy')) { build(); }
+if (document.getElementById('chYoy')) {
+  mq.addEventListener('change', function(){ setTimeout(build, 50); });
+  build();
+}
 </script>
 </body>
 </html>

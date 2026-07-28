@@ -7,64 +7,65 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
 :root{
-  color-scheme: dark;
-  --page:#0a0c0e; --surface:#15181b; --bezel:#1d2125; --ink:#f2f2ef; --ink2:#c3c2b7; --muted:#898781;
-  --grid:#2c2c2a; --border:rgba(255,255,255,0.10);
-  --accent:#d95926; --good:#0ca30c; --warncol:#fab219; --crit:#e66767; --critled:#d03b3b;
+  color-scheme: light;
+  --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --muted:#898781;
+  --grid:#e1e0d9; --border:rgba(11,11,11,0.10);
+  --accent:#eb6834; --good:#006300; --warnink:#8a5f00; --crit:#c22a2a;
+  --dgood:#0ca30c; --dwarn:#fab219; --dcrit:#d03b3b; --refbar:#c9c8c0;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --page:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
+    --grid:#2c2c2a; --border:rgba(255,255,255,0.10);
+    --accent:#d95926; --good:#0ca30c; --warnink:#fab219; --crit:#e66767; --refbar:#4a4d45;
+  }
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--page);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
-  font-size:15px;line-height:1.45;padding:22px 16px 60px}
-.wrap{max-width:1150px;margin:0 auto}
-.mono{font-family:ui-monospace,Menlo,Consolas,monospace}
-header.cab{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;
-  background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 20px;margin-bottom:16px}
-.crumb{font-size:12.5px;margin-bottom:4px}
+  font-size:15px;line-height:1.45;padding:24px 16px 60px}
+.wrap{max-width:1120px;margin:0 auto}
+header.top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:18px}
+.crumb{font-size:13px;margin-bottom:6px}
 .crumb a{color:var(--muted);text-decoration:none}
-.crumb a:hover{color:var(--ink2)}
-h1{font-size:22px;font-weight:750;letter-spacing:0.01em}
-h1 .dot{display:inline-block;width:13px;height:13px;border-radius:4px;background:var(--accent);margin-right:8px}
-.sub{color:var(--ink2);margin-top:2px;font-size:13px}
-.master{display:flex;align-items:center;gap:10px;background:var(--bezel);border:1px solid var(--border);
-  border-radius:10px;padding:10px 16px}
-.master .mw{font-size:15px;font-weight:750;letter-spacing:0.06em}
-h2{font-size:13px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);
-  margin:30px 0 12px;display:flex;align-items:center;gap:10px}
+.crumb a:hover{color:var(--ink2);text-decoration:underline}
+h1{font-size:26px;font-weight:750;letter-spacing:-0.02em}
+h1 .sq{display:inline-block;width:14px;height:14px;border-radius:4px;background:var(--accent);margin-right:9px}
+.sub{color:var(--ink2);margin-top:3px;font-size:14px}
+.estado{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);
+  border-radius:999px;padding:8px 16px;font-size:13.5px;font-weight:650}
+h2{font-size:13px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);
+  margin:32px 0 12px;display:flex;align-items:center;gap:10px}
 h2::after{content:"";flex:1;height:1px;background:var(--grid)}
 h3{font-size:13.5px;font-weight:600;color:var(--ink2);margin:0 0 10px}
-/* instrumentos */
-.gauges{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
-.gpanel{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 14px 10px;
-  text-align:center;min-width:0;box-shadow:inset 0 1px 0 rgba(255,255,255,0.04)}
-.gtitle{font-size:11.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
-.gpanel svg{width:100%;max-width:280px;height:auto}
-.gsub{font-size:12.5px;color:var(--ink2);margin-top:2px}
-/* lecturas digitales */
-.readouts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:14px}
-.readout{background:var(--bezel);border:1px solid var(--border);border-radius:12px;padding:12px 16px;min-width:0}
-.rl{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted)}
-.rv{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:29px;font-weight:700;margin:4px 0 2px;
-  color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.rs{font-size:12px;color:var(--ink2)}
-/* leds */
-.leds{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
-.ledbox{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 16px;min-width:0}
-.ledrow{display:flex;align-items:center;gap:10px}
-.led{width:13px;height:13px;border-radius:50%;flex:none}
-.led.good{background:var(--good);box-shadow:0 0 10px 2px rgba(12,163,12,.55)}
-.led.warn{background:var(--warncol);box-shadow:0 0 10px 2px rgba(250,178,25,.5)}
-.led.crit{background:var(--critled);box-shadow:0 0 10px 2px rgba(208,59,59,.55)}
-.led.info{background:var(--accent);box-shadow:0 0 10px 2px rgba(120,150,255,.35)}
-.lv{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:24px;font-weight:700}
-.ll{font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink2);margin-top:4px}
-.ls{font-size:12px;color:var(--muted)}
+/* KPIs hero */
+.heroes{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.hero{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 18px;min-width:0}
+.hl{font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted)}
+.hv{font-size:34px;font-weight:750;margin:6px 0 4px;letter-spacing:-0.01em;display:flex;align-items:center;
+  gap:10px;flex-wrap:wrap;font-variant-numeric:tabular-nums}
+.hs{font-size:13px;color:var(--ink2)}
+.badge{font-size:13px;font-weight:750;padding:3px 10px;border-radius:999px}
+.badge.good{color:var(--good);background:rgba(12,163,12,.12)}
+.badge.warn{color:var(--warnink);background:rgba(250,178,25,.14)}
+.badge.crit{color:var(--crit);background:rgba(208,59,59,.12)}
+.c-good{color:var(--good)} .c-warn{color:var(--warnink)} .c-crit{color:var(--crit)}
+/* indicadores secundarios */
+.inds{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.indbox{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px 16px;min-width:0}
+.indrow{display:flex;align-items:center;gap:9px}
+.dot{width:11px;height:11px;border-radius:50%;flex:none}
+.dot.good{background:var(--dgood)} .dot.warn{background:var(--dwarn)} .dot.crit{background:var(--dcrit)}
+.iv{font-size:23px;font-weight:750;font-variant-numeric:tabular-nums}
+.il{font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink2);margin-top:4px}
+.is{font-size:12.5px;color:var(--muted)}
 /* acciones */
 ol.acciones{list-style:none;display:flex;flex-direction:column;gap:8px}
 ol.acciones li{background:var(--surface);border:1px solid var(--border);border-radius:10px;
-  padding:11px 14px;font-size:14.5px;display:flex;align-items:baseline;gap:10px}
-.prio{font-family:ui-monospace,Menlo,monospace;font-size:12px;font-weight:800;border-radius:6px;
-  padding:2px 7px;flex:none;color:#0a0c0e}
-.prio.crit{background:var(--critled)} .prio.warn{background:var(--warncol)} .prio.info{background:var(--accent)}
+  padding:11px 14px;font-size:14.5px;display:flex;align-items:baseline;gap:11px}
+.prio{font-size:12.5px;font-weight:800;border-radius:999px;width:22px;height:22px;flex:none;
+  display:inline-flex;align-items:center;justify-content:center;color:#fff;transform:translateY(3px)}
+.prio.crit{background:var(--dcrit)} .prio.warn{background:#b97e00} .prio.info{background:var(--accent)}
 /* tarjetas / tablas */
 .cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media(max-width:840px){.cards{grid-template-columns:1fr}}
@@ -86,26 +87,28 @@ footer{margin-top:40px;color:var(--muted);font-size:12.5px;border-top:1px solid 
 <body>
 <div class="wrap">
 
-<header class="cab">
+<header class="top">
   <div>
-    <div class="crumb"><a href="index.html">← Centro de mando</a></div>
-    <h1><span class="dot"></span>Vasos Impresos</h1>
+    <div class="crumb"><a href="index.html">← Ventas DEVIART</a></div>
+    <h1><span class="sq"></span>Vasos Impresos</h1>
     <div class="sub">Serie IMP (SANTANDER IMPRESIONES) · Fuente: Odoo · Corte: <strong>27 de julio de 2026</strong></div>
   </div>
-  <div class="master"><span class="led crit"></span><span class="mw">CRÍTICO</span></div>
+  <div class="estado"><span class="dot crit"></span>Requiere acción</div>
 </header>
 
-<h2>Instrumentos</h2>
-<div class="gauges"><div class="gpanel"><div class="gtitle">Ritmo del mes</div><svg viewBox="0 0 260 168" role="img" aria-label="Ritmo del mes: 98%"><path d="M 38.0 128.0 A 92 92 0 0 1 149.1 38.0" fill="none" stroke="#d03b3b" stroke-width="13" stroke-linecap="butt"/><path d="M 149.1 38.0 A 92 92 0 0 1 176.0 48.3" fill="none" stroke="#fab219" stroke-width="13" stroke-linecap="butt"/><path d="M 176.0 48.3 A 92 92 0 0 1 222.0 128.0" fill="none" stroke="#0ca30c" stroke-width="13" stroke-linecap="butt"/><line x1="28.0" y1="128.0" x2="22.0" y2="128.0" stroke="#898781" stroke-width="2"/><text x="11.0" y="128.0" font-size="9.5" fill="#898781" text-anchor="middle" dominant-baseline="middle">0</text><line x1="41.7" y1="77.0" x2="36.5" y2="74.0" stroke="#898781" stroke-width="2"/><text x="26.9" y="68.5" font-size="9.5" fill="#898781" text-anchor="middle" dominant-baseline="middle">25</text><line x1="79.0" y1="39.7" x2="76.0" y2="34.5" stroke="#898781" stroke-width="2"/><text x="70.5" y="24.9" font-size="9.5" fill="#898781" text-anchor="middle" dominant-baseline="middle">50</text><line x1="130.0" y1="26.0" x2="130.0" y2="20.0" stroke="#898781" stroke-width="2"/><text x="130.0" y="9.0" font-size="9.5" fill="#898781" text-anchor="middle" dominant-baseline="middle">75</text><line x1="181.0" y1="39.7" x2="184.0" y2="34.5" stroke="#ffffff" stroke-width="3"/><text x="189.5" y="24.9" font-size="9.5" fill="#c3c2b7" text-anchor="middle" dominant-baseline="middle">100</text><line x1="218.3" y1="77.0" x2="223.5" y2="74.0" stroke="#898781" stroke-width="2"/><text x="233.1" y="68.5" font-size="9.5" fill="#898781" text-anchor="middle" dominant-baseline="middle">125</text><line x1="232.0" y1="128.0" x2="238.0" y2="128.0" stroke="#898781" stroke-width="2"/><text x="249.0" y="128.0" font-size="9.5" fill="#898781" text-anchor="middle" dominant-baseline="middle">150</text><line x1="130" y1="128" x2="164.7" y2="60.4" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round"/><circle cx="130" cy="128" r="7" fill="#ffffff"/><circle cx="130" cy="128" r="3" fill="#1a1a19"/><text x="130" y="162" font-size="30" font-weight="700" fill="#fab219" text-anchor="middle" font-family="ui-monospace,Menlo,monospace">98%</text></svg><div class="gsub">Julio al día 27: $141,809 · junio: $145,276</div></div><div class="gpanel"><div class="gtitle">Mes vs 2025</div><svg viewBox="0 0 260 168" role="img" aria-label="Mes vs 2025: 91%"><path d="M 38.0 128.0 A 92 92 0 0 1 149.1 38.0" fill="none" stroke="#d03b3b" stroke-width="13" stroke-linecap="butt"/><path d="M 149.1 38.0 A 92 92 0 0 1 176.0 48.3" fill="none" stroke="#fab219" stroke-width="13" stroke-linecap="butt"/><path d="M 176.0 48.3 A 92 92 0 0 1 222.0 128.0" fill="none" stroke="#0ca30c" stroke-width="13" stroke-linecap="butt"/><line x1="28.0" y1="128.0" x2="22.0" y2="128.0" stroke="#898781" stroke-width="2"/><text x="11.0" y="128.0" font-size="9.5" fill="#898781" text-anchor="middle" dominant-baseline="middle">0</text><line x1="41.7" y1="77.0" x2="36.5" y2="74.0" stroke="#898781" stroke-width="2"/><text x="26.9" y="68.5" font-size="9.5" fill="#898781" text-anchor="middle" dominant-baseline="middle">25</text><line x1="79.0" y1="39.7" x2="76.0" y2="34.5" stroke="#898781" stroke-width="2"/><text x="70.5" y="24.9" font-size="9.5" fill="#898781" text-anchor="middle" dominant-baseline="middle">50</text><line x1="130.0" y1="26.0" x2="130.0" y2="20.0" stroke="#898781" stroke-width="2"/><text x="130.0" y="9.0" font-size="9.5" fill="#898781" text-anchor="middle" dominant-baseline="middle">75</text><line x1="181.0" y1="39.7" x2="184.0" y2="34.5" stroke="#ffffff" stroke-width="3"/><text x="189.5" y="24.9" font-size="9.5" fill="#c3c2b7" text-anchor="middle" dominant-baseline="middle">100</text><line x1="218.3" y1="77.0" x2="223.5" y2="74.0" stroke="#898781" stroke-width="2"/><text x="233.1" y="68.5" font-size="9.5" fill="#898781" text-anchor="middle" dominant-baseline="middle">125</text><line x1="232.0" y1="128.0" x2="238.0" y2="128.0" stroke="#898781" stroke-width="2"/><text x="249.0" y="128.0" font-size="9.5" fill="#898781" text-anchor="middle" dominant-baseline="middle">150</text><line x1="130" y1="128" x2="155.5" y2="56.4" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round"/><circle cx="130" cy="128" r="7" fill="#ffffff"/><circle cx="130" cy="128" r="3" fill="#1a1a19"/><text x="130" y="162" font-size="30" font-weight="700" fill="#fab219" text-anchor="middle" font-family="ui-monospace,Menlo,monospace">91%</text></svg><div class="gsub">Proyección julio: $162,818 · julio 2025: $178,283</div></div><div class="gpanel"><div class="gtitle">Acumulado 2026 vs 2025</div><svg viewBox="0 0 260 168" role="img" aria-label="Acumulado 2026 vs 2025: 44%"><path d="M 38.0 128.0 A 92 92 0 0 1 149.1 38.0" fill="none" stroke="#d03b3b" stroke-width="13" stroke-linecap="butt"/><path d="M 149.1 38.0 A 92 92 0 0 1 176.0 48.3" fill="none" stroke="#fab219" stroke-width="13" stroke-linecap="butt"/><path d="M 176.0 48.3 A 92 92 0 0 1 222.0 128.0" fill="none" stroke="#0ca30c" stroke-width="13" stroke-linecap="butt"/><line x1="28.0" y1="128.0" x2="22.0" y2="128.0" stroke="#898781" stroke-width="2"/><text x="11.0" y="128.0" font-size="9.5" fill="#898781" text-anchor="middle" dominant-baseline="middle">0</text><line x1="41.7" y1="77.0" x2="36.5" y2="74.0" stroke="#898781" stroke-width="2"/><text x="26.9" y="68.5" font-size="9.5" fill="#898781" text-anchor="middle" dominant-baseline="middle">25</text><line x1="79.0" y1="39.7" x2="76.0" y2="34.5" stroke="#898781" stroke-width="2"/><text x="70.5" y="24.9" font-size="9.5" fill="#898781" text-anchor="middle" dominant-baseline="middle">50</text><line x1="130.0" y1="26.0" x2="130.0" y2="20.0" stroke="#898781" stroke-width="2"/><text x="130.0" y="9.0" font-size="9.5" fill="#898781" text-anchor="middle" dominant-baseline="middle">75</text><line x1="181.0" y1="39.7" x2="184.0" y2="34.5" stroke="#ffffff" stroke-width="3"/><text x="189.5" y="24.9" font-size="9.5" fill="#c3c2b7" text-anchor="middle" dominant-baseline="middle">100</text><line x1="218.3" y1="77.0" x2="223.5" y2="74.0" stroke="#898781" stroke-width="2"/><text x="233.1" y="68.5" font-size="9.5" fill="#898781" text-anchor="middle" dominant-baseline="middle">125</text><line x1="232.0" y1="128.0" x2="238.0" y2="128.0" stroke="#898781" stroke-width="2"/><text x="249.0" y="128.0" font-size="9.5" fill="#898781" text-anchor="middle" dominant-baseline="middle">150</text><line x1="130" y1="128" x2="84.1" y2="67.4" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round"/><circle cx="130" cy="128" r="7" fill="#ffffff"/><circle cx="130" cy="128" r="3" fill="#1a1a19"/><text x="130" y="162" font-size="30" font-weight="700" fill="#d03b3b" text-anchor="middle" font-family="ui-monospace,Menlo,monospace">44%</text></svg><div class="gsub">YTD 2026: $1,788,991 · YTD 2025: $4,059,958</div></div></div>
-<div class="readouts"><div class="readout"><div class="rl">Venta de hoy · 27-jul</div><div class="rv">$20,000</div><div class="rs">1 factura</div></div><div class="readout"><div class="rl">Semana en curso</div><div class="rv">$20,000</div><div class="rs">Semana pasada: $17,400</div></div><div class="readout"><div class="rl">Julio (al día 27)</div><div class="rv">$141,809</div><div class="rs">9 facturas · ticket $15,757</div></div><div class="readout"><div class="rl">Proyección de cierre</div><div class="rv">$162,818</div><div class="rs">Junio cerró en $145,276</div></div></div>
+<h2>Los números de hoy</h2>
+<div class="heroes"><div class="hero"><div class="hl">Venta de hoy · 27-jul</div><div class="hv">$20,000</div><div class="hs">1 factura · Semana: $20,000 (pasada: $17,400)</div></div><div class="hero"><div class="hl">Julio al día 27</div><div class="hv">$141,809<span class="badge warn">▼ 2%</span></div><div class="hs">Junio al día 27: $145,276 · 9 facturas</div></div><div class="hero"><div class="hl">Proyección de cierre</div><div class="hv">$162,818<span class="badge good">▲ 12%</span></div><div class="hs">Junio cerró en $145,276</div></div></div>
 
-<h2>Indicadores de estado</h2>
-<div class="leds"><div class="ledbox"><div class="ledrow"><span class="led good"></span><span class="lv">$0</span></div><div class="ll">Cobranza vencida</div><div class="ls">Sin saldo vencido</div></div><div class="ledbox"><div class="ledrow"><span class="led warn"></span><span class="lv">16</span></div><div class="ll">En ventana de recompra</div><div class="ls">45–180 días desde su último pedido</div></div><div class="ledbox"><div class="ledrow"><span class="led good"></span><span class="lv">61%</span></div><div class="ll">Tasa de recompra</div><div class="ls">72 de 118 clientes con 2+ compras</div></div><div class="ledbox"><div class="ledrow"><span class="led good"></span><span class="lv">1</span></div><div class="ll">Nuevos en julio</div><div class="ls">Grupo Astra Nova</div></div></div>
+<h2>Contra el año pasado</h2>
+<div class="heroes"><div class="hero"><div class="hl">Julio vs julio 2025</div><div class="hv c-warn">91%</div><div class="hs">Proyección $162,818 vs julio 2025 ($178,283)</div></div><div class="hero"><div class="hl">Acumulado 2026 vs 2025</div><div class="hv c-crit">44%</div><div class="hs">$1,788,991 vs $4,059,958 al mismo corte</div></div><div class="hero"><div class="hl">Ticket promedio julio</div><div class="hv">$15,757</div><div class="hs">Junio: $9,685</div></div></div>
 
-<h2>Plan de acción de hoy</h2>
-<ol class="acciones"><li><span class="prio warn">P1</span> <strong>Recompra — Comercializadora Cafedoc</strong>: 62 días desde su último pedido, cliente de $901,721 (35 pedidos).</li><li><span class="prio warn">P2</span> <strong>Recompra — Italian Coffee</strong>: 109 días desde su último pedido, cliente de $573,226 (3 pedidos).</li><li><span class="prio warn">P3</span> <strong>Recompra — Cafeterias Rapidas</strong>: 90 días desde su último pedido, cliente de $361,800 (8 pedidos).</li><li><span class="prio warn">P4</span> <strong>Recompra — Promotora Turistica Posada Real</strong>: 54 días desde su último pedido, cliente de $109,350 (6 pedidos).</li><li><span class="prio warn">P5</span> <strong>Recompra — Operadora Mega</strong>: 166 días desde su último pedido, cliente de $98,600 (8 pedidos).</li><li><span class="prio info">P6</span> <strong>Reactivar a Arce Soluciones</strong>: sin pedir desde 27-ene 2026, histórico de $3,217,500.</li><li><span class="prio info">P7</span> <strong>Reactivar a Upper By Canelo Energy</strong>: sin pedir desde 12-nov 2025, histórico de $247,865.</li></ol>
+<h2>Focos</h2>
+<div class="inds"><div class="indbox"><div class="indrow"><span class="dot good"></span><span class="iv">$0</span></div><div class="il">Cobranza vencida</div><div class="is">Sin saldo vencido</div></div><div class="indbox"><div class="indrow"><span class="dot warn"></span><span class="iv">16</span></div><div class="il">En ventana de recompra</div><div class="is">45–180 días desde su último pedido</div></div><div class="indbox"><div class="indrow"><span class="dot good"></span><span class="iv">61%</span></div><div class="il">Tasa de recompra</div><div class="is">72 de 118 clientes con 2+ compras</div></div><div class="indbox"><div class="indrow"><span class="dot good"></span><span class="iv">1</span></div><div class="il">Nuevos en julio</div><div class="is">Grupo Astra Nova</div></div></div>
 
-<h2>Radar — 2026 vs 2025 y día a día</h2>
+<h2>Qué hacer hoy</h2>
+<ol class="acciones"><li><span class="prio warn">1</span> <span><strong>Recompra — Comercializadora Cafedoc</strong>: 62 días desde su último pedido, cliente de $901,721 (35 pedidos).</span></li><li><span class="prio warn">2</span> <span><strong>Recompra — Italian Coffee</strong>: 109 días desde su último pedido, cliente de $573,226 (3 pedidos).</span></li><li><span class="prio warn">3</span> <span><strong>Recompra — Cafeterias Rapidas</strong>: 90 días desde su último pedido, cliente de $361,800 (8 pedidos).</span></li><li><span class="prio warn">4</span> <span><strong>Recompra — Promotora Turistica Posada Real</strong>: 54 días desde su último pedido, cliente de $109,350 (6 pedidos).</span></li><li><span class="prio warn">5</span> <span><strong>Recompra — Operadora Mega</strong>: 166 días desde su último pedido, cliente de $98,600 (8 pedidos).</span></li><li><span class="prio info">6</span> <span><strong>Reactivar a Arce Soluciones</strong>: sin pedir desde 27-ene 2026, histórico de $3,217,500.</span></li><li><span class="prio info">7</span> <span><strong>Reactivar a Upper By Canelo Energy</strong>: sin pedir desde 12-nov 2025, histórico de $247,865.</span></li></ol>
+
+<h2>Tendencia</h2>
 <div class="cards">
   <div class="card full"><h3>Venta mensual: 2026 (color) vs 2025 (gris) — abr–may 2025 incluyen pedidos extraordinarios de Arce Soluciones</h3>
     <div class="chartbox"><canvas id="chYoy"></canvas></div></div>
@@ -124,22 +127,25 @@ footer{margin-top:40px;color:var(--muted);font-size:12.5px;border-top:1px solid 
 
 <h2>Cobranza</h2>
 <div class="cards">
-  <div class="card"><h3>Saldos vencidos por cliente</h3><p class='empty'>Sin cartera vencida. ✔</p></div>
+  <div class="card"><h3>Saldos vencidos por cliente</h3><p class='empty'>Sin cartera vencida.</p></div>
   <div class="card"><h3>Resumen</h3><div class="twrap"><table><thead><tr><th style="text-align:left">Concepto</th><th style="text-align:right">Monto</th><th style="text-align:right">Facturas</th></tr></thead><tbody><tr><td style="text-align:left">Vencido</td><td style="text-align:right">$0</td><td style="text-align:right">0</td></tr><tr><td style="text-align:left">Por vencer (al corriente)</td><td style="text-align:right">$40,400</td><td style="text-align:right">3</td></tr></tbody></table></div></div>
 </div>
 
-<h2>Bitácora — últimas facturas</h2>
+<h2>Últimas facturas</h2>
 <div class="cards"><div class="card full"><div class="twrap"><table><thead><tr><th style="text-align:left">Folio</th><th style="text-align:right">Fecha</th><th style="text-align:left">Cliente</th><th style="text-align:right">Monto</th><th style="text-align:left">Estado</th></tr></thead><tbody><tr><td style="text-align:left">IMP/2026/00088</td><td style="text-align:right">27-jul</td><td style="text-align:left">190 Octane</td><td style="text-align:right">$20,000</td><td style="text-align:left"><span class="ok">Pagada</span></td></tr><tr><td style="text-align:left">IMP/2026/00087</td><td style="text-align:right">20-jul</td><td style="text-align:left">El Palacio De Hierro</td><td style="text-align:right">$8,700</td><td style="text-align:left"><span class="warn">Por cobrar</span></td></tr><tr><td style="text-align:left">IMP/2026/00086</td><td style="text-align:right">20-jul</td><td style="text-align:left">El Palacio De Hierro</td><td style="text-align:right">$8,700</td><td style="text-align:left"><span class="warn">Por cobrar</span></td></tr><tr><td style="text-align:left">IMP/2026/00084</td><td style="text-align:right">16-jul</td><td style="text-align:left">Grupo Astra Nova</td><td style="text-align:right">$6,612</td><td style="text-align:left"><span class="ok">Pagada</span></td></tr><tr><td style="text-align:left">IMP/2026/00083</td><td style="text-align:right">13-jul</td><td style="text-align:left">Brocotish Entertainment</td><td style="text-align:right">$27,260</td><td style="text-align:left"><span class="ok">Pagada</span></td></tr><tr><td style="text-align:left">IMP/2026/00082</td><td style="text-align:right">13-jul</td><td style="text-align:left">Operadora Club De Golf Punta Mita</td><td style="text-align:right">$23,000</td><td style="text-align:left"><span class="warn">Por cobrar</span></td></tr><tr><td style="text-align:left">IMP/2026/00081</td><td style="text-align:right">6-jul</td><td style="text-align:left">190 Octane</td><td style="text-align:right">$40,000</td><td style="text-align:left"><span class="ok">Pagada</span></td></tr><tr><td style="text-align:left">IMP/2026/00080</td><td style="text-align:right">2-jul</td><td style="text-align:left">Edgar Santiago Bañuelos Flores</td><td style="text-align:right">$3,712</td><td style="text-align:left"><span class="ok">Pagada</span></td></tr><tr><td style="text-align:left">IMP/2026/00079</td><td style="text-align:right">1-jul</td><td style="text-align:left">Mb Triplay</td><td style="text-align:right">$3,825</td><td style="text-align:left"><span class="ok">Pagada</span></td></tr><tr><td style="text-align:left">IMP/2026/00078</td><td style="text-align:right">22-jun</td><td style="text-align:left">Erre Para Llevar</td><td style="text-align:right">$6,000</td><td style="text-align:left"><span class="ok">Pagada</span></td></tr></tbody></table></div></div></div>
 
-<footer>Facturas timbradas (state=posted) en Odoo, montos con IVA. Escala de los instrumentos: 100 = igual que la referencia; zona roja &lt;85, ámbar 85–100, verde &gt;100. YTD compara enero–hoy contra el mismo período de 2025 (el mes en curso de 2025 se prorratea al día 27). “Venta de hoy” = facturas con fecha del día del corte. PÚBLICO GENERAL y cuentas internas se excluyen de las listas de acción (no de los totales). Generado el 27 de julio de 2026 desde datos_ventas.json.</footer>
+<footer>Facturas timbradas (state=posted) en Odoo, montos con IVA. Semáforo: verde = igual o mejor que la referencia, ámbar = hasta 15% abajo, rojo = más de 15% abajo. El acumulado (YTD) compara enero–hoy contra el mismo período de 2025, prorrateando julio de 2025 al día 27. “Venta de hoy” = facturas con fecha del día del corte. PÚBLICO GENERAL y cuentas internas se excluyen de las listas de acción (no de los totales). Generado el 27 de julio de 2026 desde datos_ventas.json.</footer>
 </div>
 <script>
 var CD = {"meses": ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"], "yPas": [300317, 173438, 247654, 1456781, 1405194, 321297, 178283, 275782, 217156, 101517, 211097, 449030], "yAct": [534967, 166631, 206914, 458767, 134628, 145276, 141809, null, null, null, null, null], "labelsDia": ["28 jun", "29 jun", "30 jun", "1 jul", "2 jul", "3 jul", "4 jul", "5 jul", "6 jul", "7 jul", "8 jul", "9 jul", "10 jul", "11 jul", "12 jul", "13 jul", "14 jul", "15 jul", "16 jul", "17 jul", "18 jul", "19 jul", "20 jul", "21 jul", "22 jul", "23 jul", "24 jul", "25 jul", "26 jul", "27 jul"], "dia": [0, 0, 0, 3825, 3712, 0, 0, 0, 40000, 0, 0, 0, 0, 0, 0, 50260, 0, 0, 6612, 0, 0, 0, 17400, 0, 0, 0, 0, 0, 0, 20000]};
+var mq = window.matchMedia('(prefers-color-scheme: dark)');
 function css(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
 var MXNc = new Intl.NumberFormat('es-MX', {style:'currency', currency:'MXN', notation:'compact', maximumFractionDigits:1});
 var MXN  = new Intl.NumberFormat('es-MX', {style:'currency', currency:'MXN', maximumFractionDigits:0});
+var charts = [];
 function build(){
-  var acc = css('--accent'), muted = css('--muted'), grid = css('--grid');
+  charts.forEach(function(c){ c.destroy(); }); charts = [];
+  var acc = css('--accent'), muted = css('--muted'), grid = css('--grid'), ref = css('--refbar');
   Chart.defaults.color = muted;
   Chart.defaults.borderColor = grid;
   Chart.defaults.font.family = 'system-ui,-apple-system,"Segoe UI",sans-serif';
@@ -147,18 +153,18 @@ function build(){
   var moneyTick = { callback: function(v){ return MXNc.format(v); } };
   var moneyTip = { callbacks: { label: function(ctx){ return ctx.dataset.label + ': ' + MXN.format(ctx.parsed.y); } } };
 
-  new Chart(document.getElementById('chYoy'), {
+  charts.push(new Chart(document.getElementById('chYoy'), {
     type: 'bar',
     data: { labels: CD.meses, datasets: [
-      { label: '2025', data: CD.yPas, backgroundColor: '#4a4d45', borderRadius: 4, maxBarThickness: 22 },
+      { label: '2025', data: CD.yPas, backgroundColor: ref, borderRadius: 4, maxBarThickness: 22 },
       { label: '2026', data: CD.yAct, backgroundColor: acc, borderRadius: 4, maxBarThickness: 22 }
     ]},
     options: { responsive: true, maintainAspectRatio: false,
       plugins: { legend: { position: 'top', labels: { boxWidth: 12, boxHeight: 12 } }, tooltip: moneyTip },
       scales: { x: { grid: { display: false } }, y: { ticks: moneyTick, border: { display: false } } } }
-  });
+  }));
 
-  new Chart(document.getElementById('chDia'), {
+  charts.push(new Chart(document.getElementById('chDia'), {
     type: 'bar',
     data: { labels: CD.labelsDia, datasets: [
       { label: 'Venta del día', data: CD.dia, backgroundColor: acc, borderRadius: 3, maxBarThickness: 22 }
@@ -167,9 +173,12 @@ function build(){
       plugins: { legend: { display: false }, tooltip: moneyTip },
       scales: { x: { grid: { display: false }, ticks: { maxRotation: 60, autoSkip: true, maxTicksLimit: 16 } },
                 y: { ticks: moneyTick, border: { display: false } } } }
-  });
+  }));
 }
-if (document.getElementById('chYoy')) { build(); }
+if (document.getElementById('chYoy')) {
+  mq.addEventListener('change', function(){ setTimeout(build, 50); });
+  build();
+}
 </script>
 </body>
 </html>
