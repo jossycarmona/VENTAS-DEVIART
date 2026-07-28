@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Distribuidores — Ventas DEVIART</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  color-scheme: light;
+  --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --muted:#898781;
+  --grid:#e1e0d9; --border:rgba(11,11,11,0.10);
+  --accent:#2a78d6; --good:#006300; --crit:#d03b3b;
+  --warnbg:#fdf3e7; --warnbord:#ec835a;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --page:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
+    --grid:#2c2c2a; --border:rgba(255,255,255,0.10);
+    --accent:#3987e5; --good:#0ca30c; --crit:#e66767;
+    --warnbg:#2a1f16; --warnbord:#ec835a;
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--page);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:15px;line-height:1.45;padding:24px 16px 60px}
+.wrap{max-width:1100px;margin:0 auto}
+header{margin-bottom:20px}
+.crumb{font-size:13px;margin-bottom:10px}
+.crumb a{color:var(--ink2);text-decoration:none}
+.crumb a:hover{text-decoration:underline}
+h1{font-size:26px;font-weight:700;letter-spacing:-0.02em}
+h1 .dot{display:inline-block;width:14px;height:14px;border-radius:4px;background:var(--accent);margin-right:8px}
+.sub{color:var(--ink2);margin-top:4px;font-size:14px}
+h2{font-size:17px;font-weight:650;margin:34px 0 12px;padding-top:18px;border-top:1px solid var(--grid)}
+h3{font-size:14px;font-weight:600;color:var(--ink2);margin:0 0 10px}
+.alert{background:var(--warnbg);border-left:4px solid var(--warnbord);padding:12px 16px;border-radius:8px;
+  margin:16px 0;font-size:14.5px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.tile{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;min-width:0}
+.tl{font-size:12.5px;color:var(--muted);font-weight:550}
+.tv{font-size:24px;font-weight:700;margin:4px 0 2px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ts{font-size:12.5px;color:var(--ink2)}
+.chip{font-size:12px;font-weight:650;padding:2px 8px;border-radius:999px;border:1px solid var(--border)}
+.chip.up{color:var(--good)} .chip.down{color:var(--crit)}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:820px){.cards{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;min-width:0}
+.card.full{grid-column:1/-1}
+.chartbox{position:relative;height:280px}
+.chartbox canvas{position:absolute;inset:0;max-width:100%}
+.chartbox.small{height:220px}
+.twrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.03em;
+  padding:7px 10px;border-bottom:1px solid var(--grid);white-space:nowrap}
+td{padding:7px 10px;border-bottom:1px solid var(--grid);font-variant-numeric:tabular-nums}
+tbody tr:last-child td{border-bottom:none}
+.ok{color:var(--good);font-weight:550}.warn{color:var(--crit);font-weight:550}
+.empty{color:var(--muted);font-size:13.5px;padding:8px 2px}
+ol.acciones{list-style:none;display:flex;flex-direction:column;gap:8px}
+ol.acciones li{background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:10px 14px;font-size:14px}
+ol.acciones .ico{margin-right:6px}
+footer{margin-top:40px;color:var(--muted);font-size:12.5px;border-top:1px solid var(--grid);padding-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="crumb"><a href="index.html">Ventas DEVIART</a> / Distribuidores</div>
+  <h1><span class="dot"></span>Distribuidores — Panel Diario</h1>
+  <div class="sub">Series FDIS · REMA · REMB (sin Otakara) · Fuente: Odoo · Corte: <strong>27 de julio de 2026</strong></div>
+</header>
+<div class="alert"><strong>Atención:</strong> la venta de julio va <strong>49% abajo</strong> de junio al mismo corte ($459,191 vs $900,665 al día 27). Proyección de cierre: $527,219 vs $1,019,684 del mes pasado.</div>
+<h2>Pulso</h2>
+<div class="tiles"><div class="tile"><div class="tl">Venta de hoy · 27-jul</div><div class="tv">$7,920</div><div class="ts">2 facturas</div></div><div class="tile"><div class="tl">Semana en curso (desde lun 27-jul)</div><div class="tv">$7,920</div><div class="ts">Semana pasada completa: $129,603</div></div><div class="tile"><div class="tl">Julio (MTD)</div><div class="tv">$459,191<span class="chip down">▼ 49%</span></div><div class="ts">vs junio al día 27: $900,665 · 32 facturas</div></div><div class="tile"><div class="tl">Proyección de cierre julio</div><div class="tv">$527,219</div><div class="ts">Junio cerró en $1,019,684</div></div><div class="tile"><div class="tl">Julio 2025 (año pasado)</div><div class="tv">$741,233<span class="chip down">▼ 29%</span></div><div class="ts">Proyección actual vs año pasado</div></div><div class="tile"><div class="tl">Ticket promedio julio</div><div class="tv">$14,350</div><div class="ts">Junio: $20,394</div></div></div>
+<h2>Acciones de hoy</h2>
+<ol class="acciones"><li><span class="ico">💰</span> Cobrar a <strong>Fanny Montserrat Lartigue Gutierrez</strong>: $140,400 vencido (2 facturas, la más antigua venció el 25-jul).</li><li><span class="ico">💰</span> Cobrar a <strong>Padcolor Insumos Graficos</strong>: $58,529 vencido (6 facturas, la más antigua venció el 16-jul).</li><li><span class="ico">💰</span> Cobrar a <strong>Mayra Virginia Ornelas Soto</strong>: $29,110 vencido (1 factura, la más antigua venció el 18-jul).</li><li><span class="ico">📞</span> Llamar a <strong>Edgar Santiago Bañuelos Flores</strong>: 28 días sin pedir — compraba cada 6 días, lleva $1,321,169 en 13 meses.</li><li><span class="ico">📞</span> Llamar a <strong>Beatriz Fernanda Rodriguez</strong>: 35 días sin pedir — compraba cada 22 días, lleva $762,525 en 13 meses.</li><li><span class="ico">📞</span> Llamar a <strong>Michel Martinez Mendoza</strong>: 45 días sin pedir — compraba cada 28 días, lleva $433,000 en 13 meses.</li><li><span class="ico">📞</span> Llamar a <strong>Rotulos Y Offset De Cancun</strong>: 46 días sin pedir — compraba cada 30 días, lleva $94,987 en 13 meses.</li><li><span class="ico">📞</span> Llamar a <strong>Laura Ivette Verdugo Rodriguez</strong>: 118 días sin pedir — compraba cada 40 días, lleva $33,426 en 13 meses.</li><li><span class="ico">📞</span> Llamar a <strong>Printing Market</strong>: 69 días sin pedir — compraba cada 16 días, lleva $25,990 en 13 meses.</li></ol>
+<h2>Tendencia</h2>
+<div class="cards">
+  <div class="card full"><h3>Venta mensual (13 meses)</h3><div class="chartbox"><canvas id="chMes"></canvas></div></div>
+  <div class="card full"><h3>Venta diaria — últimos 30 días</h3><div class="chartbox"><canvas id="chDia"></canvas></div></div>
+  <div class="card"><h3>Distribuidores activos por mes</h3><div class="chartbox small"><canvas id="chCli"></canvas></div></div>
+  <div class="card"><h3>Datos mensuales</h3><div class="twrap"><table><thead><tr><th style="text-align:left">Mes</th><th style="text-align:right">Venta</th><th style="text-align:right">Facturas</th><th style="text-align:right">Clientes</th></tr></thead><tbody><tr><td style="text-align:left">jul 25</td><td style="text-align:right">$741,233</td><td style="text-align:right">43</td><td style="text-align:right">21</td></tr><tr><td style="text-align:left">ago 25</td><td style="text-align:right">$454,722</td><td style="text-align:right">20</td><td style="text-align:right">10</td></tr><tr><td style="text-align:left">sep 25</td><td style="text-align:right">$839,928</td><td style="text-align:right">39</td><td style="text-align:right">16</td></tr><tr><td style="text-align:left">oct 25</td><td style="text-align:right">$889,624</td><td style="text-align:right">41</td><td style="text-align:right">19</td></tr><tr><td style="text-align:left">nov 25</td><td style="text-align:right">$768,537</td><td style="text-align:right">45</td><td style="text-align:right">17</td></tr><tr><td style="text-align:left">dic 25</td><td style="text-align:right">$946,816</td><td style="text-align:right">42</td><td style="text-align:right">19</td></tr><tr><td style="text-align:left">ene 26</td><td style="text-align:right">$971,475</td><td style="text-align:right">55</td><td style="text-align:right">22</td></tr><tr><td style="text-align:left">feb 26</td><td style="text-align:right">$613,734</td><td style="text-align:right">34</td><td style="text-align:right">11</td></tr><tr><td style="text-align:left">mar 26</td><td style="text-align:right">$973,734</td><td style="text-align:right">43</td><td style="text-align:right">14</td></tr><tr><td style="text-align:left">abr 26</td><td style="text-align:right">$678,905</td><td style="text-align:right">38</td><td style="text-align:right">13</td></tr><tr><td style="text-align:left">may 26</td><td style="text-align:right">$1,084,278</td><td style="text-align:right">48</td><td style="text-align:right">20</td></tr><tr><td style="text-align:left">jun 26</td><td style="text-align:right">$1,019,684</td><td style="text-align:right">50</td><td style="text-align:right">20</td></tr><tr><td style="text-align:left">jul 26</td><td style="text-align:right">$459,191</td><td style="text-align:right">32</td><td style="text-align:right">16</td></tr></tbody></table></div></div>
+</div>
+<h2>Cartera de distribuidores</h2>
+<div class="tiles"><div class="tile"><div class="tl">Distribuidores activos en julio</div><div class="tv">16</div><div class="ts">Junio cerró con 20</div></div><div class="tile"><div class="tl">Concentración top 3 (13 m)</div><div class="tv">57%</div><div class="ts">Oso $3.0M · Fanny $1.6M · Edgar $1.3M</div></div><div class="tile"><div class="tl">Nuevos / reactivados en julio</div><div class="tv">6</div><div class="ts">Guadalupe Barraza Perez, Juvenal Morales Ensaldo, Mola Mucho</div></div><div class="tile"><div class="tl">En riesgo / dormidos</div><div class="tv">8 / 6</div><div class="ts">Detalle en las tablas de abajo</div></div></div>
+<div class="cards" style="margin-top:14px">
+  <div class="card full"><h3>⚠️ En riesgo — bajaron su ritmo de compra (llamar esta semana)</h3><div class="twrap"><table><thead><tr><th style="text-align:left">Distribuidor</th><th style="text-align:right">Sin comprar</th><th style="text-align:right">Compraba</th><th style="text-align:right">Pedidos 13m</th><th style="text-align:right">Venta 13m</th></tr></thead><tbody><tr><td style="text-align:left">Edgar Santiago Bañuelos Flores</td><td style="text-align:right">28 días</td><td style="text-align:right">cada 6 días</td><td style="text-align:right">55</td><td style="text-align:right">$1,321,169</td></tr><tr><td style="text-align:left">Beatriz Fernanda Rodriguez</td><td style="text-align:right">35 días</td><td style="text-align:right">cada 22 días</td><td style="text-align:right">17</td><td style="text-align:right">$762,525</td></tr><tr><td style="text-align:left">Michel Martinez Mendoza</td><td style="text-align:right">45 días</td><td style="text-align:right">cada 28 días</td><td style="text-align:right">12</td><td style="text-align:right">$433,000</td></tr><tr><td style="text-align:left">Rotulos Y Offset De Cancun</td><td style="text-align:right">46 días</td><td style="text-align:right">cada 30 días</td><td style="text-align:right">12</td><td style="text-align:right">$94,987</td></tr><tr><td style="text-align:left">Laura Ivette Verdugo Rodriguez</td><td style="text-align:right">118 días</td><td style="text-align:right">cada 40 días</td><td style="text-align:right">7</td><td style="text-align:right">$33,426</td></tr><tr><td style="text-align:left">Printing Market</td><td style="text-align:right">69 días</td><td style="text-align:right">cada 16 días</td><td style="text-align:right">12</td><td style="text-align:right">$25,990</td></tr><tr><td style="text-align:left">Marisol Karolina Romo Aguirre</td><td style="text-align:right">103 días</td><td style="text-align:right">cada 48 días</td><td style="text-align:right">3</td><td style="text-align:right">$12,172</td></tr><tr><td style="text-align:left">Jaime Angeles Paramo</td><td style="text-align:right">222 días</td><td style="text-align:right">cada 56 días</td><td style="text-align:right">4</td><td style="text-align:right">$12,110</td></tr></tbody></table></div></div>
+  <div class="card"><h3>Dormidos — sin comprar hace más de 5 meses (reactivar)</h3><div class="twrap"><table><thead><tr><th style="text-align:left">Distribuidor dormido</th><th style="text-align:right">Última compra</th><th style="text-align:right">Pedidos 13m</th><th style="text-align:right">Venta 13m</th></tr></thead><tbody><tr><td style="text-align:left">Comercializadora Internacional Ibepsa</td><td style="text-align:right">13-ene 2026</td><td style="text-align:right">2</td><td style="text-align:right">$77,658</td></tr><tr><td style="text-align:left">Plasticos Las Brisas</td><td style="text-align:right">9-sep 2025</td><td style="text-align:right">1</td><td style="text-align:right">$50,912</td></tr><tr><td style="text-align:left">Sergio Edmundo Lopez Gomez</td><td style="text-align:right">29-ene 2026</td><td style="text-align:right">3</td><td style="text-align:right">$45,467</td></tr><tr><td style="text-align:left">Rubi Fernandez Lopez</td><td style="text-align:right">11-dic 2025</td><td style="text-align:right">7</td><td style="text-align:right">$33,038</td></tr><tr><td style="text-align:left">Aaron Eduardo Valenzuela Cantu</td><td style="text-align:right">1-dic 2025</td><td style="text-align:right">2</td><td style="text-align:right">$29,216</td></tr><tr><td style="text-align:left">Articulos Ja</td><td style="text-align:right">23-oct 2025</td><td style="text-align:right">2</td><td style="text-align:right">$20,389</td></tr></tbody></table></div></div>
+  <div class="card"><h3>Top 10 (últimos 13 meses)</h3><div class="twrap"><table><thead><tr><th style="text-align:right">#</th><th style="text-align:left">Distribuidor</th><th style="text-align:right">Pedidos</th><th style="text-align:right">Última</th><th style="text-align:right">Venta 13m</th><th style="text-align:right">% acum.</th></tr></thead><tbody><tr><td style="text-align:right">1</td><td style="text-align:left">Oso Poderoso</td><td style="text-align:right">38</td><td style="text-align:right">16-jul</td><td style="text-align:right">$2,998,700</td><td style="text-align:right">29%</td></tr><tr><td style="text-align:right">2</td><td style="text-align:left">Fanny Montserrat Lartigue Gutierrez</td><td style="text-align:right">20</td><td style="text-align:right">20-jul</td><td style="text-align:right">$1,614,114</td><td style="text-align:right">44%</td></tr><tr><td style="text-align:right">3</td><td style="text-align:left">Edgar Santiago Bañuelos Flores</td><td style="text-align:right">55</td><td style="text-align:right">29-jun</td><td style="text-align:right">$1,321,169</td><td style="text-align:right">57%</td></tr><tr><td style="text-align:right">4</td><td style="text-align:left">Beatriz Fernanda Rodriguez</td><td style="text-align:right">17</td><td style="text-align:right">22-jun</td><td style="text-align:right">$762,525</td><td style="text-align:right">64%</td></tr><tr><td style="text-align:right">5</td><td style="text-align:left">Padcolor Insumos Graficos</td><td style="text-align:right">60</td><td style="text-align:right">22-jul</td><td style="text-align:right">$592,467</td><td style="text-align:right">70%</td></tr><tr><td style="text-align:right">6</td><td style="text-align:left">Papel, Diseño Y Color</td><td style="text-align:right">118</td><td style="text-align:right">14-jul</td><td style="text-align:right">$544,012</td><td style="text-align:right">75%</td></tr><tr><td style="text-align:right">7</td><td style="text-align:left">Michel Martinez Mendoza</td><td style="text-align:right">12</td><td style="text-align:right">12-jun</td><td style="text-align:right">$433,000</td><td style="text-align:right">79%</td></tr><tr><td style="text-align:right">8</td><td style="text-align:left">Tiburcio San Juan Reyes</td><td style="text-align:right">25</td><td style="text-align:right">6-jul</td><td style="text-align:right">$331,741</td><td style="text-align:right">82%</td></tr><tr><td style="text-align:right">9</td><td style="text-align:left">Rigel Arided Mendoza Morales</td><td style="text-align:right">6</td><td style="text-align:right">8-jun</td><td style="text-align:right">$226,544</td><td style="text-align:right">85%</td></tr><tr><td style="text-align:right">10</td><td style="text-align:left">Mayra Virginia Ornelas Soto</td><td style="text-align:right">5</td><td style="text-align:right">18-jun</td><td style="text-align:right">$220,806</td><td style="text-align:right">87%</td></tr></tbody></table></div></div>
+</div>
+<h2>Cobranza</h2>
+<div class="tiles"><div class="tile"><div class="tl">Saldo vencido</div><div class="tv">$228,039</div><div class="ts">3 clientes con saldo vencido</div></div><div class="tile"><div class="tl">Por vencer (al corriente)</div><div class="tv">$253,456</div><div class="ts">26 facturas</div></div></div>
+<div class="cards" style="margin-top:14px">
+  <div class="card full"><h3>Saldos vencidos por cliente</h3><div class="twrap"><table><thead><tr><th style="text-align:left">Cliente</th><th style="text-align:right">Facturas</th><th style="text-align:right">Vencida más antigua</th><th style="text-align:right">Saldo vencido</th></tr></thead><tbody><tr><td style="text-align:left">Fanny Montserrat Lartigue Gutierrez</td><td style="text-align:right">2</td><td style="text-align:right">25-jul</td><td style="text-align:right">$140,400</td></tr><tr><td style="text-align:left">Padcolor Insumos Graficos</td><td style="text-align:right">6</td><td style="text-align:right">16-jul</td><td style="text-align:right">$58,529</td></tr><tr><td style="text-align:left">Mayra Virginia Ornelas Soto</td><td style="text-align:right">1</td><td style="text-align:right">18-jul</td><td style="text-align:right">$29,110</td></tr></tbody></table></div></div>
+</div>
+<h2>Últimas facturas</h2>
+<div class="cards"><div class="card full"><div class="twrap"><table><thead><tr><th style="text-align:left">Folio</th><th style="text-align:right">Fecha</th><th style="text-align:left">Cliente</th><th style="text-align:right">Monto</th><th style="text-align:left">Estado</th></tr></thead><tbody><tr><td style="text-align:left">REMA/2026/00021</td><td style="text-align:right">27-jul</td><td style="text-align:left">Maria Guadalupe Diaz Mendoza</td><td style="text-align:right">$1,865</td><td style="text-align:left"><span class="warn">Por cobrar</span></td></tr><tr><td style="text-align:left">FDIS/2026/00315</td><td style="text-align:right">27-jul</td><td style="text-align:left">Nathaly Guadalupe Maldonado Cortes</td><td style="text-align:right">$6,055</td><td style="text-align:left"><span class="ok">Pagada</span></td></tr><tr><td style="text-align:left">FDIS/2026/00314</td><td style="text-align:right">24-jul</td><td style="text-align:left">Jesus Antonio Morales Valencia</td><td style="text-align:right">$3,028</td><td style="text-align:left"><span class="ok">Pagada</span></td></tr><tr><td style="text-align:left">FDIS/2026/00313</td><td style="text-align:right">23-jul</td><td style="text-align:left">America Alviso Resendiz</td><td style="text-align:right">$4,466</td><td style="text-align:left"><span class="ok">Pagada</span></td></tr><tr><td style="text-align:left">FDIS/2026/00312</td><td style="text-align:right">23-jul</td><td style="text-align:left">Mola Mucho</td><td style="text-align:right">$4,050</td><td style="text-align:left"><span class="ok">Pagada</span></td></tr><tr><td style="text-align:left">FDIS/2026/00311</td><td style="text-align:right">23-jul</td><td style="text-align:left">America Alviso Resendiz</td><td style="text-align:right">$6,055</td><td style="text-align:left"><span class="ok">Pagada</span></td></tr><tr><td style="text-align:left">FDIS/2026/00310</td><td style="text-align:right">23-jul</td><td style="text-align:left">America Alviso Resendiz</td><td style="text-align:right">$2,631</td><td style="text-align:left"><span class="ok">Pagada</span></td></tr><tr><td style="text-align:left">FDIS/2026/00306</td><td style="text-align:right">22-jul</td><td style="text-align:left">Padcolor Insumos Graficos</td><td style="text-align:right">$11,145</td><td style="text-align:left"><span class="warn">Por cobrar</span></td></tr><tr><td style="text-align:left">FDIS/2026/00305</td><td style="text-align:right">21-jul</td><td style="text-align:left">Publico General</td><td style="text-align:right">$1,035</td><td style="text-align:left"><span class="ok">Pagada</span></td></tr><tr><td style="text-align:left">FDIS/2026/00304</td><td style="text-align:right">21-jul</td><td style="text-align:left">Padcolor Insumos Graficos</td><td style="text-align:right">$14,920</td><td style="text-align:left"><span class="warn">Por cobrar</span></td></tr></tbody></table></div></div></div>
+
+<footer><strong>Metodología.</strong> Diarios SANTANDER (FDIS), REMISIONES AZTECA (REMA) y REMISIONES BAJIO (REMB), excluyendo Otakara. Métricas por cliente sobre los últimos 13 meses. Cadencia = días entre primera y última compra / (pedidos − 1). Facturas timbradas (state=posted) en Odoo, montos con IVA. Las notas de crédito históricas (2023–2024) son inmateriales y no se incluyen. “Venta de hoy” = facturas con fecha del día del corte. PÚBLICO GENERAL y cuentas internas se excluyen de las listas de acción (no de los totales). Generado el 27 de julio de 2026 desde datos_ventas.json.</footer>
+</div>
+<script>
+var CD = {"labelsMes": ["jul 25", "ago 25", "sep 25", "oct 25", "nov 25", "dic 25", "ene 26", "feb 26", "mar 26", "abr 26", "may 26", "jun 26", "jul 26"], "mes": [741233, 454722, 839928, 889624, 768537, 946816, 971475, 613734, 973734, 678905, 1084278, 1019684, 459191], "clientes": [21, 10, 16, 19, 17, 19, 22, 11, 14, 13, 20, 20, 16], "labelsDia": ["28 jun", "29 jun", "30 jun", "1 jul", "2 jul", "3 jul", "4 jul", "5 jul", "6 jul", "7 jul", "8 jul", "9 jul", "10 jul", "11 jul", "12 jul", "13 jul", "14 jul", "15 jul", "16 jul", "17 jul", "18 jul", "19 jul", "20 jul", "21 jul", "22 jul", "23 jul", "24 jul", "25 jul", "26 jul", "27 jul"], "dia": [0, 84202, 34817, 20621, 11490, 14381, 0, 0, 28082, 0, 0, 0, 88767, 0, 0, 14004, 21923, 0, 122400, 0, 0, 0, 82272, 15956, 11145, 17202, 3028, 0, 0, 7920]};
+var mq = window.matchMedia('(prefers-color-scheme: dark)');
+var charts = [];
+function css(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+var MXNc = new Intl.NumberFormat('es-MX', {style:'currency', currency:'MXN', notation:'compact', maximumFractionDigits:1});
+var MXN  = new Intl.NumberFormat('es-MX', {style:'currency', currency:'MXN', maximumFractionDigits:0});
+function build(){
+  charts.forEach(function(c){ c.destroy(); }); charts = [];
+  var acc = css('--accent'), muted = css('--muted'), grid = css('--grid');
+  Chart.defaults.color = muted;
+  Chart.defaults.borderColor = grid;
+  Chart.defaults.font.family = 'system-ui,-apple-system,"Segoe UI",sans-serif';
+  Chart.defaults.font.size = 12;
+  var moneyTick = { callback: function(v){ return MXNc.format(v); } };
+  var moneyTip = { callbacks: { label: function(ctx){ return MXN.format(ctx.parsed.y); } } };
+
+  charts.push(new Chart(document.getElementById('chMes'), {
+    type: 'bar',
+    data: { labels: CD.labelsMes, datasets: [
+      { data: CD.mes, backgroundColor: acc, borderRadius: 4, maxBarThickness: 34 }
+    ]},
+    options: { responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: moneyTip },
+      scales: { x: { grid: { display: false } }, y: { ticks: moneyTick, border: { display: false } } } }
+  }));
+
+  charts.push(new Chart(document.getElementById('chDia'), {
+    type: 'bar',
+    data: { labels: CD.labelsDia, datasets: [
+      { data: CD.dia, backgroundColor: acc, borderRadius: 3, maxBarThickness: 22 }
+    ]},
+    options: { responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: moneyTip },
+      scales: { x: { grid: { display: false }, ticks: { maxRotation: 60, autoSkip: true, maxTicksLimit: 16 } },
+                y: { ticks: moneyTick, border: { display: false } } } }
+  }));
+
+  charts.push(new Chart(document.getElementById('chCli'), {
+    type: 'line',
+    data: { labels: CD.labelsMes, datasets: [
+      { data: CD.clientes, borderColor: acc, backgroundColor: acc,
+        borderWidth: 2, pointRadius: 4, tension: 0.3 }
+    ]},
+    options: { responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: { x: { grid: { display: false }, ticks: { maxTicksLimit: 7 } },
+                y: { beginAtZero: true, ticks: { precision: 0 }, border: { display: false } } } }
+  }));
+}
+mq.addEventListener('change', function(){ setTimeout(build, 50); });
+build();
+</script>
+</body>
+</html>
