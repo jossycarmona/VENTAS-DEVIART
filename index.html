@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ventas DEVIART — Paneles Diarios</title>
+<title>Análisis de Clientes 2021–2026 — Ventas DEVIART</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
 :root{
   color-scheme: light;
   --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --muted:#898781;
   --grid:#e1e0d9; --border:rgba(11,11,11,0.10);
-  --accent:#2a78d6; --good:#006300; --warnink:#8a5f00; --crit:#c22a2a;
+  --acc-d:#2a78d6; --acc-i:#eb6834; --good:#006300; --warnink:#8a5f00; --crit:#c22a2a;
   --dgood:#0ca30c; --dwarn:#fab219; --dcrit:#d03b3b; --refbar:#c9c8c0;
 }
 @media (prefers-color-scheme: dark){
@@ -18,220 +18,200 @@
     color-scheme: dark;
     --page:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
     --grid:#2c2c2a; --border:rgba(255,255,255,0.10);
-    --accent:#3987e5; --good:#0ca30c; --warnink:#fab219; --crit:#e66767; --refbar:#4a4d45;
+    --acc-d:#3987e5; --acc-i:#d95926; --good:#0ca30c; --warnink:#fab219; --crit:#e66767; --refbar:#4a4d45;
   }
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--page);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
   font-size:15px;line-height:1.45;padding:24px 16px 60px}
-.wrap{max-width:1120px;margin:0 auto}
-header.top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:18px}
+.wrap{max-width:1150px;margin:0 auto}
 .crumb{font-size:13px;margin-bottom:6px}
 .crumb a{color:var(--muted);text-decoration:none}
 .crumb a:hover{color:var(--ink2);text-decoration:underline}
 h1{font-size:26px;font-weight:750;letter-spacing:-0.02em}
-h1 .sq{display:inline-block;width:14px;height:14px;border-radius:4px;background:var(--accent);margin-right:9px}
-.sub{color:var(--ink2);margin-top:3px;font-size:14px}
-.estado{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);
-  border-radius:999px;padding:8px 16px;font-size:13.5px;font-weight:650}
-h2{font-size:13px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);
-  margin:32px 0 12px;display:flex;align-items:center;gap:10px}
+.sub{color:var(--ink2);margin-top:3px;font-size:14px;margin-bottom:18px}
+h2{font-size:15px;font-weight:750;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink2);
+  margin:36px 0 14px;display:flex;align-items:center;gap:10px}
+h2 .sq{width:13px;height:13px;border-radius:4px;display:inline-block}
 h2::after{content:"";flex:1;height:1px;background:var(--grid)}
 h3{font-size:13.5px;font-weight:600;color:var(--ink2);margin:0 0 10px}
-/* KPIs hero */
-.heroes{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
-.hero{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 18px;min-width:0}
-.hl{font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted)}
-.hv{font-size:34px;font-weight:750;margin:6px 0 4px;letter-spacing:-0.01em;display:flex;align-items:center;
-  gap:10px;flex-wrap:wrap;font-variant-numeric:tabular-nums}
-.hs{font-size:13px;color:var(--ink2)}
-.badge{font-size:13px;font-weight:750;padding:3px 10px;border-radius:999px}
-.badge.good{color:var(--good);background:rgba(12,163,12,.12)}
-.badge.warn{color:var(--warnink);background:rgba(250,178,25,.14)}
-.badge.crit{color:var(--crit);background:rgba(208,59,59,.12)}
-.c-good{color:var(--good)} .c-warn{color:var(--warnink)} .c-crit{color:var(--crit)}
-/* indicadores secundarios */
-.inds{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
-.indbox{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px 16px;min-width:0}
-.indrow{display:flex;align-items:center;gap:9px}
-.dot{width:11px;height:11px;border-radius:50%;flex:none}
-.dot.good{background:var(--dgood)} .dot.warn{background:var(--dwarn)} .dot.crit{background:var(--dcrit)}
-.iv{font-size:23px;font-weight:750;font-variant-numeric:tabular-nums}
-.il{font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink2);margin-top:4px}
-.is{font-size:12.5px;color:var(--muted)}
-/* acciones */
-ol.acciones{list-style:none;display:flex;flex-direction:column;gap:8px}
-ol.acciones li{background:var(--surface);border:1px solid var(--border);border-radius:10px;
-  padding:11px 14px;font-size:14.5px;display:flex;align-items:baseline;gap:11px}
-.prio{font-size:12.5px;font-weight:800;border-radius:999px;width:22px;height:22px;flex:none;
-  display:inline-flex;align-items:center;justify-content:center;color:#fff;transform:translateY(3px)}
-.prio.crit{background:var(--dcrit)} .prio.warn{background:#b97e00} .prio.info{background:var(--accent)}
-/* tarjetas / tablas */
+.heroes{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.hero{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:15px 17px;min-width:0}
+.hl{font-size:11.5px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted)}
+.hv{font-size:29px;font-weight:750;margin:5px 0 3px;font-variant-numeric:tabular-nums}
+.hs{font-size:12.5px;color:var(--ink2)}
+.c-good{color:var(--good)} .c-crit{color:var(--crit)}
+.tag{font-size:11.5px;font-weight:650;padding:2px 9px;border-radius:999px;border:1px solid var(--border);white-space:nowrap}
+.tag.good{color:var(--good);background:rgba(12,163,12,.10)}
+.tag.warn{color:var(--warnink);background:rgba(250,178,25,.13)}
+.tag.crit{color:var(--crit);background:rgba(208,59,59,.10)}
+.tag.info{color:var(--acc-d);background:rgba(57,135,229,.10)}
 .cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-@media(max-width:840px){.cards{grid-template-columns:1fr}}
+@media(max-width:860px){.cards{grid-template-columns:1fr}}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;min-width:0}
 .card.full{grid-column:1/-1}
-.chartbox{position:relative;height:280px}
+.chartbox{position:relative;height:250px}
 .chartbox canvas{position:absolute;inset:0;max-width:100%}
 .twrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:13.5px}
-th{color:var(--muted);font-weight:600;font-size:11.5px;text-transform:uppercase;letter-spacing:0.05em;
-  padding:7px 10px;border-bottom:1px solid var(--grid);white-space:nowrap}
-td{padding:7px 10px;border-bottom:1px solid var(--grid);font-variant-numeric:tabular-nums}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.05em;
+  padding:6px 9px;border-bottom:1px solid var(--grid);white-space:nowrap}
+td{padding:6px 9px;border-bottom:1px solid var(--grid);font-variant-numeric:tabular-nums;white-space:nowrap}
 tbody tr:last-child td{border-bottom:none}
-.ok{color:var(--good);font-weight:550}.warn{color:var(--crit);font-weight:550}
 .empty{color:var(--muted);font-size:13.5px;padding:8px 2px}
-footer{margin-top:40px;color:var(--muted);font-size:12.5px;border-top:1px solid var(--grid);padding-top:14px}
+footer{margin-top:44px;color:var(--muted);font-size:12.5px;border-top:1px solid var(--grid);padding-top:14px}
 </style>
 </head>
 <body>
 <div class="wrap">
-
-<header class="top">
-  <div>
-    <h1>Ventas DEVIART</h1>
-    <div class="sub">Paneles diarios por negocio · Fuente: Odoo · Corte: <strong>29 de julio de 2026</strong></div>
-  </div>
+<header>
+  <div class="crumb"><a href="index.html">← Ventas DEVIART</a> </div>
+  <h1>Análisis de Clientes 2021–2026</h1>
+  <div class="sub">5 años y medio de historia · Fuente: VENTAS EXTERNAS.xlsx (hojas REMISIONES, FACTURAS y PADCOLOR) · Montos SIN IVA · 2026 al mes 7</div>
 </header>
-<style>
-.portadas{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px}
-@media(max-width:760px){.portadas{grid-template-columns:1fr}}
-a.portada{display:block;background:var(--surface);border:1px solid var(--border);border-radius:16px;
-  padding:20px 22px;text-decoration:none;color:var(--ink);transition:border-color .15s}
-a.portada:hover{border-color:var(--muted)}
-.pt{font-size:16.5px;font-weight:750;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
-.pt .sq{width:13px;height:13px;border-radius:4px;display:inline-block}
-.pstat{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:650;color:var(--ink2)}
-.pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(115px,1fr));gap:12px;margin:16px 0 10px}
-.pv{font-size:25px;font-weight:750;margin-top:3px;white-space:nowrap;font-variant-numeric:tabular-nums}
-.ps{font-size:13px;color:var(--ink2)}
-ol.prios{list-style:none;counter-reset:pr;display:flex;flex-direction:column;gap:7px;margin:4px 0 2px}
-ol.prios li{counter-increment:pr;position:relative;padding-left:30px;font-size:13.5px;line-height:1.45}
-ol.prios li::before{content:counter(pr);font-size:11.5px;font-weight:800;color:#fff;background:var(--pcolor);
-  border-radius:999px;width:19px;height:19px;position:absolute;left:0;top:1px;display:inline-flex;
-  align-items:center;justify-content:center}
-ol.prios li strong{font-weight:650}
-.klabel{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);
-  margin:16px 0 8px;padding-top:12px;border-top:1px solid var(--grid)}
-.chips{display:flex;flex-wrap:wrap;gap:6px}
-.kchip{font-size:12px;font-weight:550;color:var(--ink2);background:var(--page);border:1px solid var(--border);
-  border-radius:999px;padding:3px 10px;white-space:nowrap}
-</style>
-<div class="portadas">
 
-<a class="portada" href="distribuidores.html">
-  <div class="pt"><span class="sq" style="background:#2a78d6"></span>Distribuidores
-    <span class="pstat"><span class="dot crit"></span>Requiere acción</span></div>
-  <div class="pgrid">
-    <div><div class="hl">Hoy</div><div class="pv">$0</div></div>
-    <div><div class="hl">Julio al día 29</div><div class="pv">$330,826</div></div>
-    <div><div class="hl">Mes vs 2025</div><div class="pv c-crit">▼ 33%</div></div>
-    <div><div class="hl">Año vs 2025</div><div class="pv c-crit">▼ 6%</div></div>
-  </div>
-  <div class="ps">Vencido: $240,288 · Por facturar: $153,717 (4 pedidos) · En riesgo: 8</div>
-</a>
 
-<a class="portada" href="impresion.html">
-  <div class="pt"><span class="sq" style="background:#eb6834"></span>Vasos impresos
-    <span class="pstat"><span class="dot crit"></span>Requiere acción</span></div>
-  <div class="pgrid">
-    <div><div class="hl">Hoy</div><div class="pv">$0</div></div>
-    <div><div class="hl">Julio al día 29</div><div class="pv">$176,234</div></div>
-    <div><div class="hl">Mes vs 2025</div><div class="pv c-good">▲ 6%</div></div>
-    <div><div class="hl">Año vs 2025</div><div class="pv c-crit">▼ 55%</div></div>
-  </div>
-  <div class="ps">Vencido: $34,425 · Por facturar: 7 pedidos · Recompra: 61%</div>
-</a>
+<div class="cards" style="margin-top:8px">
+  <a class="card" href="analisis-distribuidores.html" style="text-decoration:none;color:var(--ink)">
+    <h3 style="color:var(--acc-d)">🔵 Análisis de Distribuidores →</h3>
+    <p style="font-size:13.5px;color:var(--ink2)">Perdidos, a quién visitar, en declive, creciendo, top histórico y retención del canal de distribuidores.</p>
+  </a>
+  <a class="card" href="analisis-impresion.html" style="text-decoration:none;color:var(--ink)">
+    <h3 style="color:var(--acc-i)">🟠 Análisis de Vasos Impresos →</h3>
+    <p style="font-size:13.5px;color:var(--ink2)">Perdidos, a quién visitar, en declive, creciendo, top histórico y retención del canal de impresión.</p>
+  </a>
 </div>
 
-<div class="portadas" style="margin-top:14px">
-  <a href="analisis-distribuidores.html" style="display:block;background:var(--surface);border:1px solid var(--border);
-    border-radius:14px;padding:14px 20px;text-decoration:none;color:var(--ink);font-size:14px">
-    <strong>📊 Análisis de Clientes — Distribuidores (2021–2026)</strong>
-    <span style="color:var(--ink2)"> — perdidos, a quién visitar, quién crece y quién cae →</span></a>
-  <a href="analisis-impresion.html" style="display:block;background:var(--surface);border:1px solid var(--border);
-    border-radius:14px;padding:14px 20px;text-decoration:none;color:var(--ink);font-size:14px">
-    <strong>📊 Análisis de Clientes — Vasos Impresos (2021–2026)</strong>
-    <span style="color:var(--ink2)"> — perdidos, a quién visitar, quién crece y quién cae →</span></a>
-</div>
 
-<h2>Prioridades de cada canal y KPIs diarios</h2>
-<div class="cards">
-  <div class="card" style="--pcolor:#2a78d6">
-    <h3><span class="sq" style="background:#2a78d6;width:11px;height:11px;border-radius:3px;display:inline-block;margin-right:7px"></span>Distribuidores — prioridades</h3>
-    <ol class="prios">
-      <li><strong>Vender: sacar pedidos hoy.</strong> Contacto activo — a quién le toca resurtir, quién puede pedir ya.</li>
-      <li><strong>Reactivar clientes inactivos y prospectar nuevos.</strong> Son la venta más barata de recuperar.</li>
-      <li><strong>Subir ticket y mix</strong> de los que ya compran: más volumen y más líneas en cada pedido.</li>
-      <li><strong>Atajar caídas de ritmo a tiempo</strong> — la lista "en riesgo" es venta que se está escapando.</li>
-      <li><strong>Cuidar al top 3 y desconcentrar</strong> desarrollando a los medianos.</li>
-      <li><strong>Vender cobrable:</strong> el crédito como herramienta comercial, la cartera al día.</li>
-    </ol>
-    <div class="klabel">KPIs que medimos a diario</div>
-    <div class="chips"><span class="kchip">Venta de hoy</span><span class="kchip">Comparación semanal (semana en curso vs pasada)</span><span class="kchip">Mes vs 2025</span><span class="kchip">Proyección de cierre</span><span class="kchip">Acumulado vs 2025</span><span class="kchip">Activos del mes</span><span class="kchip">Ticket promedio</span><span class="kchip">Concentración top 3</span><span class="kchip">En riesgo</span><span class="kchip">Clientes inactivos</span><span class="kchip">Pedidos por facturar</span><span class="kchip">Cobranza vencida</span></div>
-  </div>
-  <div class="card" style="--pcolor:#eb6834">
-    <h3><span class="sq" style="background:#eb6834;width:11px;height:11px;border-radius:3px;display:inline-block;margin-right:7px"></span>Vasos impresos — prioridades</h3>
-    <ol class="prios">
-      <li><strong>Vender: cerrar cotizaciones y provocar recompras.</strong> El arte ya existe — la recompra es la venta más fácil.</li>
-      <li><strong>Prospectar consumo constante:</strong> cafeterías, juguerías, restaurantes — no depender de eventos.</li>
-      <li><strong>Quitar fricción para cerrar rápido:</strong> cotización y muestra de arte en horas, no días.</li>
-      <li><strong>Empujar volumen en cada cierre:</strong> ofrecer el siguiente escalón de precio.</li>
-      <li><strong>Cumplir fechas de entrega</strong> — una fecha fallada mata la recompra.</li>
-    </ol>
-    <div class="klabel">KPIs que medimos a diario</div>
-    <div class="chips"><span class="kchip">Venta de hoy</span><span class="kchip">Comparación semanal (semana en curso vs pasada)</span><span class="kchip">Mes vs 2025</span><span class="kchip">Proyección de cierre</span><span class="kchip">Acumulado vs 2025</span><span class="kchip">Tasa de recompra</span><span class="kchip">Activos 90 días</span><span class="kchip">Nuevos del mes</span><span class="kchip">Ventana de recompra</span><span class="kchip">Ticket promedio</span><span class="kchip">Pedidos por facturar</span><span class="kchip">Cobranza vencida</span></div>
-  </div>
-</div>
-
-<footer>Facturas timbradas (state=posted) en Odoo, montos con IVA. TODAS las comparativas son contra 2025 (año contra año, para que el comparativo sea justo) y se muestran como variación directa: ▲ VERDE = ese % ARRIBA del año pasado (crecimiento), ▼ ROJO = ese % ABAJO (decremento). El mes en curso se compara contra julio de 2025 prorrateado al día 29, y el acumulado (YTD) contra enero–julio de 2025 con la misma prórroga. (Referencia 2025.) “Venta de hoy” = facturas con fecha del día del corte. PÚBLICO GENERAL y cuentas internas se excluyen de las listas de acción (no de los totales). Generado el 29 de julio de 2026 desde datos_ventas.json.</footer>
+<footer>
+  <strong>Metodología.</strong> Fuente única: VENTAS EXTERNAS.xlsx, hojas REMISIONES, FACTURAS y PADCOLOR (11,587 renglones,
+  ene-2021 a jul-2026), montos SIN IVA (a diferencia de los paneles diarios, que van con IVA y salen de Odoo).
+  Clasificación de canal por cliente: es de impresión si ≥50% de su compra histórica es producto impreso
+  (TIPO = IMPRESIÓN/IMPRESOS o lista IMPRESOS); el resto son distribuidores. Nombres normalizados (razones sociales,
+  acentos y variantes unificadas). PÚBLICO GENERAL cuenta en los totales del canal según el tipo de cada venta,
+  pero no aparece en listas de clientes. Excluidos por regla de dirección: Alsea ($7,135,100, solo compró en 2021),
+  Otakara, Oso Poderoso y Café Sirena. "En declive"/"Creciendo" comparan ene–jul 2026 contra ene–jul 2025 (mismo período).
+  Estatus "Perdido AAAA" = su última compra fue en ese año. KPIs: CAGR = tasa de crecimiento anual compuesto
+  2021→2025; LTV = venta histórica promedio por cliente y vida = años entre su primera y última compra;
+  altas = clientes con primera compra en el año, reactivados = regresaron tras al menos un año sin comprar,
+  bajas = compraron el año anterior y ya no; tasa de reactivación espontánea = de los clientes que alguna vez
+  dejaron de comprar un año completo, % que reanudó compras después sin gestión comercial; 80/20 calculado sobre
+  2025 (último año completo);
+  precio por pieza = venta del año ÷ piezas del año. Los clientes de la tienda web provienen del reporte de
+  Shopify (clientes nuevos y habituales por año, corte 29-jul-2026) y son un canal distinto al analizado aquí.
+  "Migró a la web" = cliente sin compras recientes en el canal cuyo nombre coincide con un comprador del padrón
+  de Shopify (cruce conservador por nombre normalizado); NO cuenta como perdido en los KPIs y se marca 🌐 en las
+  listas — al visitarlo, el objetivo es recuperar su volumen de canal, no ganarlo de cero.
+  Segmentos de distribuidores por tamaño de pedido promedio (una "compra" = un mes con pedido):
+  MAYOREO ≥ $25,000 por pedido; MEDIO MAYOREO $5,000–$25,000; MENUDEO &lt; $5,000. Los KPIs de
+  "distribuidores reales" se calculan solo sobre mayoreo + medio mayoreo, que es donde debe enfocarse
+  la gestión comercial. Generado desde analisis_5a.json.
+</footer>
 </div>
 <script>
-var CD = null;
-var mq = window.matchMedia('(prefers-color-scheme: dark)');
-function css(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+var CDX = {"d": {"anios": ["2021", "2022", "2023", "2024", "2025", "2026"], "venta": [11082903, 16813863, 13879028, 10280987, 6597898, 3899200], "clientes": [739, 394, 213, 100, 52, 35], "aniosFlujo": ["2022", "2023", "2024", "2025", "2026"], "altas": [282, 105, 32, 11, 6], "reactivados": [0, 10, 3, 4, 4], "bajas": [627, 296, 148, 63, 27], "piezas": [949401, 1344477, 1083155, 820766, 561788, 333364], "precioPieza": [11.67, 12.51, 12.81, 12.53, 11.74, 11.7], "webNuevos": [1438, 4480, 3857, 4502, 5886, 4942], "webVentas": [3541874, 17828408, 15979827, 14321457, 13214742, 6914473]}, "i": {"anios": ["2021", "2022", "2023", "2024", "2025", "2026"], "venta": [1402639, 3040732, 3889941, 4555706, 4798680, 1535754], "clientes": [28, 58, 102, 87, 52, 35], "aniosFlujo": ["2022", "2023", "2024", "2025", "2026"], "altas": [50, 89, 53, 19, 9], "reactivados": [0, 1, 6, 3, 9], "bajas": [20, 46, 74, 57, 35], "piezas": [185710, 185350, 239548, 266305, 245807, 80811], "precioPieza": [7.55, 16.41, 16.24, 17.11, 19.52, 19.0]}};
+function css(n){ return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
 var MXNc = new Intl.NumberFormat('es-MX', {style:'currency', currency:'MXN', notation:'compact', maximumFractionDigits:1});
 var MXN  = new Intl.NumberFormat('es-MX', {style:'currency', currency:'MXN', maximumFractionDigits:0});
 var charts = [];
 function build(){
   charts.forEach(function(c){ c.destroy(); }); charts = [];
-  var acc = css('--accent'), muted = css('--muted'), grid = css('--grid'), ref = css('--refbar');
-  Chart.defaults.color = muted;
-  Chart.defaults.borderColor = grid;
+  Chart.defaults.color = css('--muted');
+  Chart.defaults.borderColor = css('--grid');
   Chart.defaults.font.family = 'system-ui,-apple-system,"Segoe UI",sans-serif';
   Chart.defaults.font.size = 12;
-  var moneyTick = { callback: function(v){ return MXNc.format(v); } };
-  var moneyTip = { callbacks: { label: function(ctx){ return ctx.dataset.label + ': ' + MXN.format(ctx.parsed.y); } } };
-
-  charts.push(new Chart(document.getElementById('chYoy'), {
-    type: 'line',
-    data: { labels: CD.meses, datasets: [
-      { label: '2025', data: CD.yPas, borderColor: ref, backgroundColor: ref,
-        borderWidth: 2, pointRadius: 3.5, borderDash: [7, 5], tension: 0.25 },
-      { label: '2026', data: CD.yAct, borderColor: acc, backgroundColor: acc,
-        borderWidth: 2.5, pointRadius: 4.5, tension: 0.25 }
-    ]},
-    options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
-      plugins: { legend: { position: 'top', labels: { boxWidth: 14, boxHeight: 3 } }, tooltip: moneyTip },
-      scales: { x: { grid: { display: false } },
-                y: { beginAtZero: true, ticks: moneyTick, border: { display: false } } } }
-  }));
-
-  charts.push(new Chart(document.getElementById('chDia'), {
-    type: 'bar',
-    data: { labels: CD.labelsDia, datasets: [
-      { label: 'Venta del día', data: CD.dia, backgroundColor: acc, borderRadius: 3, maxBarThickness: 22 }
-    ]},
-    options: { responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false }, tooltip: moneyTip },
-      scales: { x: { grid: { display: false }, ticks: { maxRotation: 60, autoSkip: true, maxTicksLimit: 16 } },
-                y: { ticks: moneyTick, border: { display: false } } } }
-  }));
+  ["d", "i"].forEach(function(k){
+    var acc = css('--acc-' + k);
+    if (document.getElementById('chV' + k)) charts.push(new Chart(document.getElementById('chV' + k), {
+      type: 'line',
+      data: { labels: CDX[k].anios, datasets: [{ data: CDX[k].venta, borderColor: acc, backgroundColor: acc,
+        borderWidth: 2.5, pointRadius: 4.5, tension: 0.25 }] },
+      options: { responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false },
+          tooltip: { callbacks: { label: function(ctx){ return MXN.format(ctx.parsed.y); } } } },
+        scales: { x: { grid: { display: false } },
+                  y: { beginAtZero: true, ticks: { callback: function(v){ return MXNc.format(v); } }, border: { display: false } } } }
+    }));
+    if (document.getElementById('chC' + k)) charts.push(new Chart(document.getElementById('chC' + k), {
+      type: 'line',
+      data: { labels: CDX[k].anios, datasets: [{ data: CDX[k].clientes, borderColor: acc, backgroundColor: acc,
+        borderWidth: 2.5, pointRadius: 4.5, tension: 0.25 }] },
+      options: { responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { x: { grid: { display: false } },
+                  y: { beginAtZero: true, ticks: { precision: 0 }, border: { display: false } } } }
+    }));
+    if (document.getElementById('chF' + k)) charts.push(new Chart(document.getElementById('chF' + k), {
+      type: 'bar',
+      data: { labels: CDX[k].aniosFlujo, datasets: [
+        { label: 'Altas', data: CDX[k].altas, backgroundColor: '#0ca30c', borderRadius: 3, maxBarThickness: 30 },
+        { label: 'Reactivados', data: CDX[k].reactivados, backgroundColor: acc, borderRadius: 3, maxBarThickness: 30 },
+        { label: 'Bajas', data: CDX[k].bajas, backgroundColor: '#d03b3b', borderRadius: 3, maxBarThickness: 30 }
+      ]},
+      options: { responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { position: 'top', labels: { boxWidth: 12, boxHeight: 12 } } },
+        scales: { x: { grid: { display: false } },
+                  y: { beginAtZero: true, ticks: { precision: 0 }, border: { display: false } } } }
+    }));
+    if (document.getElementById('chP' + k)) charts.push(new Chart(document.getElementById('chP' + k), {
+      type: 'bar',
+      data: { labels: CDX[k].anios, datasets: [{ data: CDX[k].piezas, backgroundColor: acc,
+        borderRadius: 3, maxBarThickness: 34 }] },
+      options: { responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false },
+          tooltip: { callbacks: { label: function(ctx){ return ctx.parsed.y.toLocaleString('es-MX') + ' piezas'; } } } },
+        scales: { x: { grid: { display: false } },
+                  y: { beginAtZero: true, border: { display: false },
+                       ticks: { callback: function(v){ return (v/1000).toFixed(0) + 'k'; } } } } }
+    }));
+    if (document.getElementById('chX' + k)) charts.push(new Chart(document.getElementById('chX' + k), {
+      type: 'line',
+      data: { labels: CDX[k].anios, datasets: [{ data: CDX[k].precioPieza, borderColor: acc, backgroundColor: acc,
+        borderWidth: 2.5, pointRadius: 4.5, tension: 0.25 }] },
+      options: { responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false },
+          tooltip: { callbacks: { label: function(ctx){ return '$' + ctx.parsed.y.toFixed(2) + ' por pieza'; } } } },
+        scales: { x: { grid: { display: false } },
+                  y: { beginAtZero: true, border: { display: false },
+                       ticks: { callback: function(v){ return '$' + v; } } } } }
+    }));
+    if (document.getElementById('chW2' + k) && CDX[k].webVentas) {
+      charts.push(new Chart(document.getElementById('chW2' + k), {
+        type: 'line',
+        data: { labels: CDX[k].anios, datasets: [
+          { label: 'Tienda web (Shopify, ventas netas)', data: CDX[k].webVentas, borderColor: '#0ca30c',
+            backgroundColor: '#0ca30c', borderWidth: 2.5, pointRadius: 4.5, tension: 0.25 },
+          { label: 'Canal tradicional (este análisis)', data: CDX[k].venta, borderColor: acc,
+            backgroundColor: acc, borderWidth: 2.5, pointRadius: 4.5, tension: 0.25 }
+        ]},
+        options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
+          plugins: { legend: { position: 'top', labels: { boxWidth: 14, boxHeight: 3 } },
+            tooltip: { callbacks: { label: function(ctx){ return ctx.dataset.label + ': ' + MXN.format(ctx.parsed.y); } } } },
+          scales: { x: { grid: { display: false } },
+                    y: { beginAtZero: true, ticks: { callback: function(v){ return MXNc.format(v); } },
+                         border: { display: false } } } }
+      }));
+    }
+    if (document.getElementById('chW' + k) && CDX[k].webNuevos) {
+      charts.push(new Chart(document.getElementById('chW' + k), {
+        type: 'line',
+        data: { labels: CDX[k].anios, datasets: [
+          { label: 'Clientes nuevos en la web (Shopify)', data: CDX[k].webNuevos, borderColor: '#0ca30c',
+            backgroundColor: '#0ca30c', borderWidth: 2.5, pointRadius: 4.5, tension: 0.25 },
+          { label: 'Clientes activos del canal tradicional', data: CDX[k].clientes, borderColor: acc,
+            backgroundColor: acc, borderWidth: 2.5, pointRadius: 4.5, tension: 0.25 }
+        ]},
+        options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
+          plugins: { legend: { position: 'top', labels: { boxWidth: 14, boxHeight: 3 } } },
+          scales: { x: { grid: { display: false } },
+                    y: { beginAtZero: true, ticks: { precision: 0 }, border: { display: false } } } }
+      }));
+    }
+  });
 }
-if (document.getElementById('chYoy')) {
-  mq.addEventListener('change', function(){ setTimeout(build, 50); });
-  build();
-}
+var mq = window.matchMedia('(prefers-color-scheme: dark)');
+mq.addEventListener('change', function(){ setTimeout(build, 50); });
+build();
 </script>
 </body>
 </html>
