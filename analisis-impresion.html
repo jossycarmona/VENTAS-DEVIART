@@ -117,7 +117,7 @@ footer{margin-top:44px;color:var(--muted);font-size:12.5px;border-top:1px solid 
 </footer>
 </div>
 <script>
-var CDX = {"d": {"anios": ["2021", "2022", "2023", "2024", "2025", "2026"], "venta": [11082903, 16813863, 13879028, 10280987, 6597898, 3899200], "clientes": [739, 394, 213, 100, 52, 35], "aniosFlujo": ["2022", "2023", "2024", "2025", "2026"], "altas": [282, 105, 32, 11, 6], "reactivados": [0, 10, 3, 4, 4], "bajas": [627, 296, 148, 63, 27], "piezas": [949401, 1344477, 1083155, 820766, 561788, 333364], "precioPieza": [11.67, 12.51, 12.81, 12.53, 11.74, 11.7], "webNuevos": [1438, 4480, 3857, 4502, 5886, 4942]}, "i": {"anios": ["2021", "2022", "2023", "2024", "2025", "2026"], "venta": [1402639, 3040732, 3889941, 4555706, 4798680, 1535754], "clientes": [28, 58, 102, 87, 52, 35], "aniosFlujo": ["2022", "2023", "2024", "2025", "2026"], "altas": [50, 89, 53, 19, 9], "reactivados": [0, 1, 6, 3, 9], "bajas": [20, 46, 74, 57, 35], "piezas": [185710, 185350, 239548, 266305, 245807, 80811], "precioPieza": [7.55, 16.41, 16.24, 17.11, 19.52, 19.0]}};
+var CDX = {"d": {"anios": ["2021", "2022", "2023", "2024", "2025", "2026"], "venta": [11082903, 16813863, 13879028, 10280987, 6597898, 3899200], "clientes": [739, 394, 213, 100, 52, 35], "aniosFlujo": ["2022", "2023", "2024", "2025", "2026"], "altas": [282, 105, 32, 11, 6], "reactivados": [0, 10, 3, 4, 4], "bajas": [627, 296, 148, 63, 27], "piezas": [949401, 1344477, 1083155, 820766, 561788, 333364], "precioPieza": [11.67, 12.51, 12.81, 12.53, 11.74, 11.7], "webNuevos": [1438, 4480, 3857, 4502, 5886, 4942], "webVentas": [3541874, 17828408, 15979827, 14321457, 13214742, 6914473]}, "i": {"anios": ["2021", "2022", "2023", "2024", "2025", "2026"], "venta": [1402639, 3040732, 3889941, 4555706, 4798680, 1535754], "clientes": [28, 58, 102, 87, 52, 35], "aniosFlujo": ["2022", "2023", "2024", "2025", "2026"], "altas": [50, 89, 53, 19, 9], "reactivados": [0, 1, 6, 3, 9], "bajas": [20, 46, 74, 57, 35], "piezas": [185710, 185350, 239548, 266305, 245807, 80811], "precioPieza": [7.55, 16.41, 16.24, 17.11, 19.52, 19.0]}};
 function css(n){ return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
 var MXNc = new Intl.NumberFormat('es-MX', {style:'currency', currency:'MXN', notation:'compact', maximumFractionDigits:1});
 var MXN  = new Intl.NumberFormat('es-MX', {style:'currency', currency:'MXN', maximumFractionDigits:0});
@@ -184,6 +184,23 @@ function build(){
                   y: { beginAtZero: true, border: { display: false },
                        ticks: { callback: function(v){ return '$' + v; } } } } }
     }));
+    if (document.getElementById('chW2' + k) && CDX[k].webVentas) {
+      charts.push(new Chart(document.getElementById('chW2' + k), {
+        type: 'line',
+        data: { labels: CDX[k].anios, datasets: [
+          { label: 'Tienda web (Shopify, ventas netas)', data: CDX[k].webVentas, borderColor: '#0ca30c',
+            backgroundColor: '#0ca30c', borderWidth: 2.5, pointRadius: 4.5, tension: 0.25 },
+          { label: 'Canal tradicional (este análisis)', data: CDX[k].venta, borderColor: acc,
+            backgroundColor: acc, borderWidth: 2.5, pointRadius: 4.5, tension: 0.25 }
+        ]},
+        options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
+          plugins: { legend: { position: 'top', labels: { boxWidth: 14, boxHeight: 3 } },
+            tooltip: { callbacks: { label: function(ctx){ return ctx.dataset.label + ': ' + MXN.format(ctx.parsed.y); } } } },
+          scales: { x: { grid: { display: false } },
+                    y: { beginAtZero: true, ticks: { callback: function(v){ return MXNc.format(v); } },
+                         border: { display: false } } } }
+      }));
+    }
     if (document.getElementById('chW' + k) && CDX[k].webNuevos) {
       charts.push(new Chart(document.getElementById('chW' + k), {
         type: 'line',
