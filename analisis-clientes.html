@@ -71,6 +71,14 @@ footer{margin-top:44px;color:var(--muted);font-size:12.5px;border-top:1px solid 
 </header>
 
 
+<style>
+ol.prios{list-style:none;counter-reset:pr;display:flex;flex-direction:column;gap:7px;margin:4px 0 2px;padding:0}
+ol.prios li{counter-increment:pr;position:relative;padding-left:30px;font-size:13.5px;line-height:1.45}
+ol.prios li::before{content:counter(pr);font-size:11.5px;font-weight:800;color:#fff;background:var(--pcolor);
+  border-radius:999px;width:19px;height:19px;position:absolute;left:0;top:1px;display:inline-flex;
+  align-items:center;justify-content:center}
+ol.prios li strong{font-weight:650}
+</style>
 <div class="cards" style="margin-top:8px">
   <a class="card" href="analisis-distribuidores.html" style="text-decoration:none;color:var(--ink)">
     <h3 style="color:var(--acc-d)">🔵 Análisis de Distribuidores →</h3>
@@ -80,6 +88,31 @@ footer{margin-top:44px;color:var(--muted);font-size:12.5px;border-top:1px solid 
     <h3 style="color:var(--acc-i)">🟠 Análisis de Vasos Impresos →</h3>
     <p style="font-size:13.5px;color:var(--ink2)">Perdidos, a quién visitar, en declive, creciendo, top histórico y retención del canal de impresión.</p>
   </a>
+</div>
+
+<h2>Prioridades de cada canal</h2>
+<div class="cards">
+  <div class="card" style="--pcolor:var(--acc-d)">
+    <h3 style="color:var(--acc-d)">🔵 Distribuidores — prioridades</h3>
+    <ol class="prios">
+      <li><strong>Vender: sacar pedidos hoy.</strong> Contacto activo — a quién le toca resurtir, quién puede pedir ya.</li>
+      <li><strong>Reactivar clientes inactivos y prospectar nuevos.</strong> Son la venta más barata de recuperar.</li>
+      <li><strong>Subir ticket y mix</strong> de los que ya compran: más volumen y más líneas en cada pedido.</li>
+      <li><strong>Atajar caídas de ritmo a tiempo</strong> — la lista "en declive" es venta que se está escapando.</li>
+      <li><strong>Cuidar al top y desconcentrar</strong> desarrollando a los medianos.</li>
+      <li><strong>Vender cobrable:</strong> el crédito como herramienta comercial, la cartera al día.</li>
+    </ol>
+  </div>
+  <div class="card" style="--pcolor:var(--acc-i)">
+    <h3 style="color:var(--acc-i)">🟠 Vasos impresos — prioridades</h3>
+    <ol class="prios">
+      <li><strong>Vender: cerrar cotizaciones y provocar recompras.</strong> El arte ya existe — la recompra es la venta más fácil.</li>
+      <li><strong>Prospectar consumo constante:</strong> cafeterías, juguerías, restaurantes — no depender de eventos.</li>
+      <li><strong>Quitar fricción para cerrar rápido:</strong> cotización y muestra de arte en horas, no días.</li>
+      <li><strong>Empujar volumen en cada cierre:</strong> ofrecer el siguiente escalón de precio.</li>
+      <li><strong>Cumplir fechas de entrega</strong> — una fecha fallada mata la recompra.</li>
+    </ol>
+  </div>
 </div>
 
 
