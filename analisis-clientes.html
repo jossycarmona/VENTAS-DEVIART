@@ -123,7 +123,7 @@ function build(){
   ["d", "i"].forEach(function(k){
     if (!document.getElementById('chV' + k)) { return; }
     var acc = css('--acc-' + k);
-    charts.push(new Chart(document.getElementById('chV' + k), {
+    if (document.getElementById('chV' + k)) charts.push(new Chart(document.getElementById('chV' + k), {
       type: 'line',
       data: { labels: CDX[k].anios, datasets: [{ data: CDX[k].venta, borderColor: acc, backgroundColor: acc,
         borderWidth: 2.5, pointRadius: 4.5, tension: 0.25 }] },
@@ -133,7 +133,7 @@ function build(){
         scales: { x: { grid: { display: false } },
                   y: { beginAtZero: true, ticks: { callback: function(v){ return MXNc.format(v); } }, border: { display: false } } } }
     }));
-    charts.push(new Chart(document.getElementById('chC' + k), {
+    if (document.getElementById('chC' + k)) charts.push(new Chart(document.getElementById('chC' + k), {
       type: 'line',
       data: { labels: CDX[k].anios, datasets: [{ data: CDX[k].clientes, borderColor: acc, backgroundColor: acc,
         borderWidth: 2.5, pointRadius: 4.5, tension: 0.25 }] },
@@ -142,7 +142,7 @@ function build(){
         scales: { x: { grid: { display: false } },
                   y: { beginAtZero: true, ticks: { precision: 0 }, border: { display: false } } } }
     }));
-    charts.push(new Chart(document.getElementById('chF' + k), {
+    if (document.getElementById('chF' + k)) charts.push(new Chart(document.getElementById('chF' + k), {
       type: 'bar',
       data: { labels: CDX[k].aniosFlujo, datasets: [
         { label: 'Altas', data: CDX[k].altas, backgroundColor: '#0ca30c', borderRadius: 3, maxBarThickness: 30 },
@@ -154,7 +154,7 @@ function build(){
         scales: { x: { grid: { display: false } },
                   y: { beginAtZero: true, ticks: { precision: 0 }, border: { display: false } } } }
     }));
-    charts.push(new Chart(document.getElementById('chP' + k), {
+    if (document.getElementById('chP' + k)) charts.push(new Chart(document.getElementById('chP' + k), {
       type: 'bar',
       data: { labels: CDX[k].anios, datasets: [{ data: CDX[k].piezas, backgroundColor: acc,
         borderRadius: 3, maxBarThickness: 34 }] },
@@ -165,7 +165,7 @@ function build(){
                   y: { beginAtZero: true, border: { display: false },
                        ticks: { callback: function(v){ return (v/1000).toFixed(0) + 'k'; } } } } }
     }));
-    charts.push(new Chart(document.getElementById('chX' + k), {
+    if (document.getElementById('chX' + k)) charts.push(new Chart(document.getElementById('chX' + k), {
       type: 'line',
       data: { labels: CDX[k].anios, datasets: [{ data: CDX[k].precioPieza, borderColor: acc, backgroundColor: acc,
         borderWidth: 2.5, pointRadius: 4.5, tension: 0.25 }] },
