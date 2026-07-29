@@ -91,11 +91,16 @@ footer{margin-top:44px;color:var(--muted);font-size:12.5px;border-top:1px solid 
   acentos y variantes unificadas). PÚBLICO GENERAL cuenta en los totales del canal según el tipo de cada venta,
   pero no aparece en listas de clientes. Excluidos por regla de dirección: Alsea ($7,135,100, solo compró en 2021),
   Otakara, Oso Poderoso y Café Sirena. "En declive"/"Creciendo" comparan ene–jul 2026 contra ene–jul 2025 (mismo período).
-  Estatus "Perdido AAAA" = su última compra fue en ese año. Generado desde analisis_5a.json.
+  Estatus "Perdido AAAA" = su última compra fue en ese año. KPIs: CAGR = tasa de crecimiento anual compuesto
+  2021→2025; LTV = venta histórica promedio por cliente y vida = años entre su primera y última compra;
+  altas = clientes con primera compra en el año, reactivados = regresaron tras al menos un año sin comprar,
+  bajas = compraron el año anterior y ya no; "regresan solos" = de los clientes que alguna vez dejaron de comprar
+  un año completo, % que volvió a comprar después; 80/20 calculado sobre 2025 (último año completo);
+  precio por pieza = venta del año ÷ piezas del año. Generado desde analisis_5a.json.
 </footer>
 </div>
 <script>
-var CDX = {"d": {"anios": ["2021", "2022", "2023", "2024", "2025", "2026"], "venta": [11082903, 16813863, 13879028, 10280987, 6597898, 3899200], "clientes": [739, 394, 213, 101, 52, 35]}, "i": {"anios": ["2021", "2022", "2023", "2024", "2025", "2026"], "venta": [1402639, 3040732, 3889941, 4555706, 4798680, 1535754], "clientes": [28, 58, 102, 87, 52, 35]}};
+var CDX = {"d": {"anios": ["2021", "2022", "2023", "2024", "2025", "2026"], "venta": [11082903, 16813863, 13879028, 10280987, 6597898, 3899200], "clientes": [739, 394, 213, 101, 52, 35], "aniosFlujo": ["2022", "2023", "2024", "2025", "2026"], "altas": [282, 105, 33, 11, 6], "reactivados": [0, 10, 3, 4, 4], "bajas": [627, 296, 148, 64, 27], "piezas": [949401, 1344477, 1083155, 820766, 561788, 333364], "precioPieza": [11.67, 12.51, 12.81, 12.53, 11.74, 11.7]}, "i": {"anios": ["2021", "2022", "2023", "2024", "2025", "2026"], "venta": [1402639, 3040732, 3889941, 4555706, 4798680, 1535754], "clientes": [28, 58, 102, 87, 52, 35], "aniosFlujo": ["2022", "2023", "2024", "2025", "2026"], "altas": [50, 89, 53, 19, 9], "reactivados": [0, 1, 6, 3, 9], "bajas": [20, 46, 74, 57, 35], "piezas": [185710, 185350, 239548, 266305, 245807, 80811], "precioPieza": [7.55, 16.41, 16.24, 17.11, 19.52, 19.0]}};
 function css(n){ return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
 var MXNc = new Intl.NumberFormat('es-MX', {style:'currency', currency:'MXN', notation:'compact', maximumFractionDigits:1});
 var MXN  = new Intl.NumberFormat('es-MX', {style:'currency', currency:'MXN', maximumFractionDigits:0});
@@ -127,6 +132,40 @@ function build(){
         plugins: { legend: { display: false } },
         scales: { x: { grid: { display: false } },
                   y: { beginAtZero: true, ticks: { precision: 0 }, border: { display: false } } } }
+    }));
+    charts.push(new Chart(document.getElementById('chF' + k), {
+      type: 'bar',
+      data: { labels: CDX[k].aniosFlujo, datasets: [
+        { label: 'Altas', data: CDX[k].altas, backgroundColor: '#0ca30c', borderRadius: 3, maxBarThickness: 30 },
+        { label: 'Reactivados', data: CDX[k].reactivados, backgroundColor: acc, borderRadius: 3, maxBarThickness: 30 },
+        { label: 'Bajas', data: CDX[k].bajas, backgroundColor: '#d03b3b', borderRadius: 3, maxBarThickness: 30 }
+      ]},
+      options: { responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { position: 'top', labels: { boxWidth: 12, boxHeight: 12 } } },
+        scales: { x: { grid: { display: false } },
+                  y: { beginAtZero: true, ticks: { precision: 0 }, border: { display: false } } } }
+    }));
+    charts.push(new Chart(document.getElementById('chP' + k), {
+      type: 'bar',
+      data: { labels: CDX[k].anios, datasets: [{ data: CDX[k].piezas, backgroundColor: acc,
+        borderRadius: 3, maxBarThickness: 34 }] },
+      options: { responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false },
+          tooltip: { callbacks: { label: function(ctx){ return ctx.parsed.y.toLocaleString('es-MX') + ' piezas'; } } } },
+        scales: { x: { grid: { display: false } },
+                  y: { beginAtZero: true, border: { display: false },
+                       ticks: { callback: function(v){ return (v/1000).toFixed(0) + 'k'; } } } } }
+    }));
+    charts.push(new Chart(document.getElementById('chX' + k), {
+      type: 'line',
+      data: { labels: CDX[k].anios, datasets: [{ data: CDX[k].precioPieza, borderColor: acc, backgroundColor: acc,
+        borderWidth: 2.5, pointRadius: 4.5, tension: 0.25 }] },
+      options: { responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false },
+          tooltip: { callbacks: { label: function(ctx){ return '$' + ctx.parsed.y.toFixed(2) + ' por pieza'; } } } },
+        scales: { x: { grid: { display: false } },
+                  y: { beginAtZero: true, border: { display: false },
+                       ticks: { callback: function(v){ return '$' + v; } } } } }
     }));
   });
 }
