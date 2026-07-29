@@ -158,7 +158,6 @@ function build(){
   Chart.defaults.font.family = 'system-ui,-apple-system,"Segoe UI",sans-serif';
   Chart.defaults.font.size = 12;
   ["d", "i"].forEach(function(k){
-    if (!document.getElementById('chV' + k)) { return; }
     var acc = css('--acc-' + k);
     if (document.getElementById('chV' + k)) charts.push(new Chart(document.getElementById('chV' + k), {
       type: 'line',
